@@ -4,7 +4,7 @@
   /* Color Palette - Premium Dark Mode */
   --bg-primary: #0a0a0c;
   --bg-secondary: #121216;
-  --bg-glass: rgba(255, 255, 255, 0.03);
+  --bg-glass: rgba(10, 10, 12, 0.85);
   --border-glass: rgba(255, 255, 255, 0.08);
   
   --text-primary: #ffffff;
@@ -212,10 +212,10 @@ button {
 }
 
 .timeline-item-abs {
-  position: absolute;
-  width: calc(50% - 3rem);
   z-index: 5;
-  transition: transform 0.4s ease, z-index 0s;
+  width: calc(50% - 3rem);
+  transition: z-index 0.4s;
+  position: absolute;
 }
 
 .timeline-item-abs.left {

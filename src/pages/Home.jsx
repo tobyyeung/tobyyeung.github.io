@@ -165,7 +165,7 @@ const Home = () => {
                   onMouseLeave={() => setHoveredExpId(null)}
                 >
                   <div className="timeline-dot-abs"></div>
-                  <div className="glass-panel" style={{ transform: `translateX(${xShift})`, transition: 'transform 0.4s ease' }}>
+                  <div className="glass-panel" style={{ left: xShift, transition: 'left 0.4s ease, all 0.3s ease' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.5rem', flexWrap: 'wrap' }}>
                       <h3 style={{ fontSize: '1.25rem', margin: 0 }}>{exp.title}</h3>
                       <span style={{ color: 'var(--accent-primary)', fontWeight: '500', fontSize: '0.9rem' }}>{exp.dateStr}</span>

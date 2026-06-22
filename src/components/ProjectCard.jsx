@@ -4,26 +4,14 @@ const ProjectCard = ({ project, index }) => {
   const isReverse = index % 2 !== 0;
 
   return (
-    <div className={`glass-panel project-row ${isReverse ? 'reverse' : ''}`} style={{ marginBottom: '2rem', padding: '2rem', gap: '3rem', alignItems: 'center' }}>
+    <div className={`glass-panel`} style={{ marginBottom: '2rem', padding: '2rem', display: 'flex', flexDirection: 'column' }}>
       
-      {/* Image Side (30%) */}
-      <div className="project-image-container" style={{ flex: '3', border: 'none' }}>
-        <img 
-          src={project.imageUrl || `https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=800&sig=${index}`} 
-          alt={project.title} 
-          style={{ borderRadius: 'var(--radius-md)' }}
-        />
-      </div>
-
-      {/* Content Side (70%) */}
-      <div className="project-content" style={{ flex: '7', display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'center', padding: '0' }}>
-        <h3 style={{ marginBottom: '1rem', fontSize: '2rem' }}>{project.title}</h3>
-        <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem', fontSize: '1.1rem', lineHeight: '1.7' }}>
-          {project.description}
-        </p>
+      {/* Title and Technologies Header */}
+      <div style={{ textAlign: isReverse ? 'right' : 'left', marginBottom: '2rem' }}>
+        <h3 style={{ fontSize: '2rem', marginBottom: '1rem' }}>{project.title}</h3>
         
         {project.technologies && project.technologies.length > 0 && (
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '2rem' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', justifyContent: isReverse ? 'flex-end' : 'flex-start' }}>
             {project.technologies.map(tech => (
               <span key={tech} style={{ 
                 fontSize: '0.85rem', 
@@ -39,19 +27,40 @@ const ProjectCard = ({ project, index }) => {
             ))}
           </div>
         )}
+      </div>
+
+      {/* Row for Image and Description */}
+      <div style={{ display: 'flex', flexDirection: isReverse ? 'row-reverse' : 'row', gap: '3rem', alignItems: 'center', flexWrap: 'wrap' }}>
         
-        <div style={{ display: 'flex', gap: '1rem', marginTop: 'auto' }}>
-          {project.demoUrl && (
-            <a href={project.demoUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
-              Live Demo
-            </a>
-          )}
-          {project.repoUrl && (
-            <a href={project.repoUrl} target="_blank" rel="noopener noreferrer" className="btn btn-secondary">
-              Source Code
-            </a>
-          )}
+        {/* Image Side (50%) */}
+        <div style={{ flex: '1 1 300px' }}>
+          <img 
+            src={project.imageUrl || `https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=800&sig=${index}`} 
+            alt={project.title} 
+            style={{ borderRadius: 'var(--radius-md)', width: '100%', height: 'auto', objectFit: 'cover', boxShadow: 'var(--shadow-sm)' }}
+          />
         </div>
+
+        {/* Content Side (50%) */}
+        <div style={{ flex: '1 1 300px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+          <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem', fontSize: '1.1rem', lineHeight: '1.7', textAlign: isReverse ? 'right' : 'left' }}>
+            {project.description}
+          </p>
+          
+          <div style={{ display: 'flex', gap: '1rem', justifyContent: isReverse ? 'flex-end' : 'flex-start' }}>
+            {project.demoUrl && (
+              <a href={project.demoUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
+                Live Demo
+              </a>
+            )}
+            {project.repoUrl && (
+              <a href={project.repoUrl} target="_blank" rel="noopener noreferrer" className="btn btn-secondary">
+                Source Code
+              </a>
+            )}
+          </div>
+        </div>
+
       </div>
 
     </div>

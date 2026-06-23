@@ -9,11 +9,13 @@ const Home = () => {
   const [activeSkillCategory, setActiveSkillCategory] = useState("Languages");
 
   const skillsData = {
-    "Languages": ["C++", "Python", "Java", "SQL", "JavaScript", "HTML/CSS", "Lua", "Markdown", "LaTeX"],
-    "AI/ML": ["Local LLMs (Ollama)", "RAG", "Semantic Search", "Embeddings", "LangChain", "OpenCV"],
-    "Backend & Web": ["FastAPI", "React", "Next.js", "Flask", "REST APIs", "OAuth", "Uvicorn", "Pydantic", "Pandas", "NumPy"],
-    "Data & Cloud": ["AWS", "Docker", "Kubernetes", "Vercel", "Supabase", "PostgreSQL", "DuckDB", "ChromaDB", "MySQL", "SQLite"],
-    "Tools & OS": ["Git", "Conda", "Pytest", "Linux (Ubuntu)", "Bash", "VS Code", "MATLAB", "R"]
+    "Languages": ["C++", "Java", "JavaScript", "LaTeX", "Lua", "Markdown", "Python", "R"],
+    "Frontend": ["CSS", "HTML", "Next.js", "React"],
+    "Backend": ["FastAPI", "Flask", "Node.js", "REST APIs", "Uvicorn"],
+    "Databases": ["ChromaDB", "DuckDB", "MySQL", "PostgreSQL", "SQLite", "Supabase"],
+    "AI & Data": ["LangChain", "NumPy", "Ollama", "OpenCV", "Pandas", "RAG"],
+    "Cloud & DevOps": ["AWS", "Docker", "Kubernetes", "Ubuntu", "Vercel"],
+    "Tools & Utilities": ["Bash", "Conda", "Git", "OAuth", "Pydantic", "Pytest", "VS Code"]
   };
   const uiucCourses = [
     "CS 374: Introduction to Algorithms & Models of Computation",
@@ -24,6 +26,7 @@ const Home = () => {
     "CS 225: Data Structures",
     "CS 222: Software Design Lab",
     "ECON 203: Economic Statistics II",
+    "ECON 202: Economic Statistics I",
     "CS 173: Discrete Structures",
     "CS 128: Intro to Computer Science II",
     "CS 124: Intro to Computer Science I",
@@ -123,23 +126,35 @@ const Home = () => {
     <main className="animate-fade-in" style={{ paddingBottom: '0' }}>
       {/* Hero Section */}
       <section style={{ padding: '6rem 0 4rem', minHeight: '80vh', display: 'flex', alignItems: 'center' }}>
-        <div className="container">
-          <h1 style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem', marginBottom: '1.5rem', lineHeight: '1.1' }}>
-            <span style={{ fontSize: '2.5rem', color: 'var(--text-primary)', fontWeight: '500' }}>Hi, I'm</span>
-            <span className="gradient-text" style={{ fontSize: '5.5rem', display: 'block' }}>Toby Yeung</span>
-          </h1>
-          <p style={{ fontSize: '1.25rem', color: 'var(--text-secondary)', maxWidth: '800px', marginBottom: '2.5rem', lineHeight: '1.6' }}>
-            A CS & Econ student @ UIUC, specializing in building full-stack apps, containerized microservices, and AI systems.
-          </p>
-          <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-            <a href="mailto:tobycyeung@gmail.com" className="btn btn-primary">Email Me</a>
-            <a href="https://github.com/tobyyeung" target="_blank" rel="noopener noreferrer" className="btn btn-secondary" style={{ padding: '0.75rem' }} aria-label="GitHub">
-              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.02c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A4.8 4.8 0 0 0 8 18v4"></path></svg>
-            </a>
-            <a href="https://www.linkedin.com/in/yeung-toby/" target="_blank" rel="noopener noreferrer" className="btn btn-secondary" style={{ padding: '0.75rem' }} aria-label="LinkedIn">
-              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
-            </a>
+        <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap-reverse', gap: '4rem' }}>
+
+          {/* Text Content */}
+          <div style={{ flex: '1 1 500px' }}>
+            <h1 style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem', marginBottom: '1.5rem', lineHeight: '1.1' }}>
+              <span style={{ fontSize: '2.5rem', color: 'var(--text-primary)', fontWeight: '500' }}>Hi, I'm</span>
+              <span className="gradient-text" style={{ fontSize: '5.5rem', display: 'block' }}>Toby Yeung</span>
+            </h1>
+            <p style={{ fontSize: '1.25rem', color: 'var(--text-secondary)', maxWidth: '800px', marginBottom: '2.5rem', lineHeight: '1.6' }}>
+              A CS & Econ student @ UIUC, specializing in building full-stack apps, containerized microservices, and AI systems.
+            </p>
+            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
+              <a href="mailto:tobycyeung@gmail.com" className="btn btn-primary">Email Me</a>
+              <a href="https://github.com/tobyyeung" target="_blank" rel="noopener noreferrer" className="btn btn-secondary" style={{ padding: '0.75rem' }} aria-label="GitHub">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.02c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A4.8 4.8 0 0 0 8 18v4"></path></svg>
+              </a>
+              <a href="https://www.linkedin.com/in/yeung-toby/" target="_blank" rel="noopener noreferrer" className="btn btn-secondary" style={{ padding: '0.75rem' }} aria-label="LinkedIn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+              </a>
+            </div>
           </div>
+
+          {/* Image Content */}
+          <div style={{ flex: '1 1 300px', display: 'flex', justifyContent: 'center' }}>
+            <div style={{ position: 'relative', width: '100%', maxWidth: '350px', aspectRatio: '1/1', borderRadius: '50%', padding: '8px', background: 'var(--accent-gradient)' }}>
+              <img src="/images/self.jpg" alt="Toby Yeung" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%', border: '4px solid var(--bg-primary)' }} />
+            </div>
+          </div>
+
         </div>
       </section>
 
@@ -344,6 +359,7 @@ const Home = () => {
               <div key={skill} className="glass-panel" style={{
                 width: '100%',
                 aspectRatio: '1/1',
+                background: 'rgba(255, 255, 255, 0.06)',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
@@ -360,15 +376,23 @@ const Home = () => {
                 <div style={{
                   width: '40px',
                   height: '40px',
-                  borderRadius: '50%',
-                  background: 'rgba(255,255,255,0.05)',
+                  background: 'transparent',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   marginBottom: '1rem',
                   color: 'var(--text-primary)'
                 }}>
-                  <span style={{ fontSize: '1.25rem', fontFamily: 'var(--font-display)', fontWeight: 'bold' }}>
+                  <img
+                    src={`/images/skills/${skill.replace(/[\/\\]/g, '_').toLowerCase()}.png`}
+                    alt={skill}
+                    style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                      if (e.target.nextSibling) e.target.nextSibling.style.display = 'block';
+                    }}
+                  />
+                  <span style={{ display: 'none', fontSize: '1.25rem', fontFamily: 'var(--font-display)', fontWeight: 'bold' }}>
                     {skill.charAt(0)}
                   </span>
                 </div>
@@ -382,18 +406,73 @@ const Home = () => {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" style={{ padding: '6rem 0', textAlign: 'center' }}>
-        <div className="container">
-          <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>Contact Me</h2>
-          <p style={{ color: 'var(--text-secondary)', maxWidth: '600px', margin: '0 auto 2rem' }}>
-            I'm currently open to new opportunities. Whether you have a question or just want to say hi, I'll always get back to you!
-          </p>
-          <div style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <a href="mailto:tobycyeung@gmail.com" className="btn btn-primary">tobycyeung@gmail.com</a>
-            <a href="https://github.com/tobyyeung" target="_blank" rel="noopener noreferrer" className="btn btn-secondary">GitHub</a>
-            <a href="https://www.linkedin.com/in/yeung-toby/" target="_blank" rel="noopener noreferrer" className="btn btn-secondary">LinkedIn</a>
-
+      <section id="contact" style={{ padding: '6rem 0', background: 'var(--bg-secondary)' }}>
+        <div className="container" style={{ maxWidth: '800px' }}>
+          <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+            <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>Contact Me</h2>
+            <p style={{ color: 'var(--text-secondary)', maxWidth: '600px', margin: '0 auto' }}>
+              I'm currently open to new opportunities. Whether you have a question or just want to say hi, feel free to drop a message!
+            </p>
           </div>
+
+          <div className="glass-panel" style={{ padding: '3rem', borderRadius: 'var(--radius-lg)' }}>
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              const formData = new FormData(e.target);
+              const name = formData.get('name');
+              const email = formData.get('email');
+              const message = formData.get('message');
+              window.location.href = `mailto:tobycyeung@gmail.com?subject=Message from ${name}&body=${encodeURIComponent(message + '\n\nFrom: ' + name + ' (' + email + ')')}`;
+            }} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', textAlign: 'left' }}>
+                  <label htmlFor="name" style={{ color: 'var(--text-primary)', fontSize: '0.95rem', fontWeight: '500' }}>Name</label>
+                  <input type="text" id="name" name="name" required placeholder="John Doe" style={{
+                    padding: '1rem',
+                    borderRadius: 'var(--radius-md)',
+                    border: '1px solid var(--border-glass)',
+                    background: 'rgba(0,0,0,0.2)',
+                    color: 'white',
+                    fontFamily: 'inherit',
+                    fontSize: '1rem'
+                  }} />
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', textAlign: 'left' }}>
+                  <label htmlFor="email" style={{ color: 'var(--text-primary)', fontSize: '0.95rem', fontWeight: '500' }}>Email</label>
+                  <input type="email" id="email" name="email" required placeholder="john@example.com" style={{
+                    padding: '1rem',
+                    borderRadius: 'var(--radius-md)',
+                    border: '1px solid var(--border-glass)',
+                    background: 'rgba(0,0,0,0.2)',
+                    color: 'white',
+                    fontFamily: 'inherit',
+                    fontSize: '1rem'
+                  }} />
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', textAlign: 'left' }}>
+                <label htmlFor="message" style={{ color: 'var(--text-primary)', fontSize: '0.95rem', fontWeight: '500' }}>Message</label>
+                <textarea id="message" name="message" required placeholder="How can I help you?" rows="5" style={{
+                  padding: '1rem',
+                  borderRadius: 'var(--radius-md)',
+                  border: '1px solid var(--border-glass)',
+                  background: 'rgba(0,0,0,0.2)',
+                  color: 'white',
+                  fontFamily: 'inherit',
+                  fontSize: '1rem',
+                  resize: 'vertical'
+                }}></textarea>
+              </div>
+
+              <button type="submit" className="btn btn-primary" style={{ marginTop: '1rem', padding: '1rem', fontSize: '1.1rem', cursor: 'pointer' }}>
+                Send Message
+              </button>
+            </form>
+          </div>
+
         </div>
       </section>
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import ProjectCard from '../components/ProjectCard';
 import { getProjects } from '../data/projects';
 
@@ -6,7 +6,63 @@ const Home = () => {
   const [projects, setProjects] = useState([]);
   const [showAllCourses, setShowAllCourses] = useState(false);
   const [hoveredExpId, setHoveredExpId] = useState(null);
+  const [hoveredExpHeight, setHoveredExpHeight] = useState(0);
   const [activeSkillCategory, setActiveSkillCategory] = useState("Languages");
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
+  // Map of exp.id -> collapsed card height in px, updated by ResizeObserver
+  const [cardHeights, setCardHeights] = useState({});
+  const bulletRefs = useRef({});
+  const cardRefs = useRef({});
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Observe every card element for size changes (handles font reflow on resize).
+  // We skip updating the hovered card since it's expanded — we only care about collapsed heights.
+  useEffect(() => {
+    const measureAll = () => {
+      setCardHeights(prev => {
+        const heights = { ...prev };
+        Object.entries(cardRefs.current).forEach(([id, el]) => {
+          // Don't update the hovered card's height since it may be in expanded state
+          if (el && id !== hoveredExpId) {
+            heights[id] = el.getBoundingClientRect().height;
+          }
+        });
+        return heights;
+      });
+    };
+
+    // Immediate snapshot after mount/resize
+    const raf = requestAnimationFrame(measureAll);
+
+    const observer = new ResizeObserver(() => measureAll());
+    Object.values(cardRefs.current).forEach(el => { if (el) observer.observe(el); });
+    return () => {
+      cancelAnimationFrame(raf);
+      observer.disconnect();
+    };
+  // Re-run when windowWidth changes (card widths change) or hoveredExpId changes
+  // (so we re-measure the previously hovered card once it collapses)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [windowWidth, hoveredExpId]);
+
+  useEffect(() => {
+    if (!hoveredExpId) {
+      setHoveredExpHeight(0);
+      return;
+    }
+    const raf = requestAnimationFrame(() => {
+      const el = bulletRefs.current[hoveredExpId];
+      if (el) {
+        setHoveredExpHeight(el.scrollHeight);
+      }
+    });
+    return () => cancelAnimationFrame(raf);
+  }, [hoveredExpId, windowWidth]);
 
   const skillsData = {
     "Languages": ["C++", "Java", "JavaScript", "LaTeX", "Lua", "Markdown", "Python", "R"],
@@ -46,12 +102,11 @@ const Home = () => {
     setProjects(getProjects());
   }, []);
 
-
   const experiences = [
     {
       id: 'invite', title: 'INVITE AI Institute', role: 'AI Researcher', dateStr: 'Jun 2026 - Present',
       logo: '/images/experience/invite.jpg',
-      startM: 6, startY: 2026, endM: 8, endY: 2026, side: 'left', expandedHeight: 180,
+      startM: 6, startY: 2026, endM: 8, endY: 2026, side: 'left',
       shortDesc: 'Architecting intelligent RAG systems and full-stack applications to empower educators with data-driven insights.',
       bullets: [
         'Developed the Keating Framework, a full-stack AI web application using FastAPI and Python to assist educators in identifying at-risk students by synthesizing academic and behavioral data.',
@@ -62,7 +117,7 @@ const Home = () => {
     {
       id: 'mathnasium', title: 'Mathnasium', role: 'Mathematics Instructor', dateStr: 'Jan 2024 - Aug 2025',
       logo: '/images/experience/mathnasium.jpg',
-      startM: 1, startY: 2024, endM: 8, endY: 2025, side: 'right', expandedHeight: 150,
+      startM: 1, startY: 2024, endM: 8, endY: 2025, side: 'right',
       shortDesc: 'Provided tailored mathematical instruction and competition coaching for K-12 students of all learning abilities.',
       bullets: [
         'Provided 1-on-1 to 1-on-4 tutoring to 300+ students (K–12), from arithmetic to SAT Math and pre-calculus.',
@@ -73,7 +128,7 @@ const Home = () => {
     {
       id: 'techknowhow_lead', title: 'TechKnowHow Franchises', role: 'Lead Instructor', dateStr: 'May 2024 - Aug 2024',
       logo: '/images/experience/techknowhow.jpg',
-      startM: 5, startY: 2024, endM: 8, endY: 2024, side: 'right', overlapOffset: 1, expandedHeight: 90,
+      startM: 5, startY: 2024, endM: 8, endY: 2024, side: 'right', overlapOffset: 1,
       shortDesc: 'Led robotics and coding classes of 20+ students, ensuring individualized instruction in Python and Roblox.',
       bullets: [
         'Mentored 250+ students in robotics and coding using Scratch, Roblox, and Minecraft.',
@@ -83,7 +138,7 @@ const Home = () => {
     {
       id: 'thecoderschool', title: 'theCoderSchool', role: 'Code Coach', dateStr: 'Aug 2023 - Jan 2024',
       logo: '/images/experience/thecoderschool.jpg',
-      startM: 8, startY: 2023, endM: 1, endY: 2024, side: 'right', expandedHeight: 90,
+      startM: 8, startY: 2023, endM: 1, endY: 2024, side: 'right',
       shortDesc: 'Mentored students in foundational computer science logic through custom game development in Python and Scratch.',
       bullets: [
         'Coached 30+ students (ages 8–12) in Scratch, Python, and PixelPad.',
@@ -93,7 +148,7 @@ const Home = () => {
     {
       id: 'techknowhow_asst', title: 'TechKnowHow Franchises', role: 'Assistant Lead Instructor', dateStr: 'May 2023 - Aug 2023',
       logo: '/images/experience/techknowhow.jpg',
-      startM: 5, startY: 2023, endM: 8, endY: 2023, side: 'left', overlapOffset: 1, expandedHeight: 90,
+      startM: 5, startY: 2023, endM: 8, endY: 2023, side: 'left', overlapOffset: 1,
       shortDesc: 'Guided young learners through engaging robotics and coding camps, fostering early technical interest.',
       bullets: [
         'Assisted in mentoring students (ages 5–12) in introductory robotics and block-based coding.',
@@ -103,7 +158,7 @@ const Home = () => {
     {
       id: 'kesselworks', title: 'KesselWorks, LLC', role: 'Software Developer & UI/UX Intern', dateStr: 'Jun 2022 - Aug 2024',
       logo: '/images/experience/kesselworks.jpg',
-      startM: 6, startY: 2022, endM: 8, endY: 2024, side: 'left', expandedHeight: 170,
+      startM: 6, startY: 2022, endM: 8, endY: 2024, side: 'left',
       shortDesc: 'Engineered full-stack organizational tools, optimized cloud infrastructure, and redesigned mission-critical user interfaces.',
       bullets: [
         'Engineered a cloud-based calendar system using React and JavaScript, enabling internal teams to track project timelines and coordinate contractor availability.',
@@ -113,39 +168,121 @@ const Home = () => {
     }
   ];
 
-
-
   const END_YEAR = 2026;
   const END_MONTH = 8;
   const START_YEAR = 2022;
   const START_MONTH = 1;
 
-  const getPixelsForMonth = (y, m) => {
-    // 2025-26 and the beginning years (2022) have reduced scale
-    let px = (y >= 2025 || y <= 2022) ? 8 : 22;
+  // For each temporal segment between consecutive same-side experiences (top to bottom),
+  // compute the minimum px/month required so their cards don't overlap.
+  // Returns a map from a "month value" range to a min px/month.
+  const computeSegmentScales = () => {
+    const GAP = 20; // minimum px gap between cards
+    const FALLBACK_CARD_H = 80; // fallback if ResizeObserver hasn't fired yet
 
-    if (hoveredExpId) {
+    // For each side, sort experiences top-to-bottom (highest endY/endM first = latest date)
+    const segmentScales = []; // [{fromMVal, toMVal, minPx}]
+
+    ['left', 'right'].forEach(side => {
+      const sideExps = experiences.filter(e => e.side === side);
+      // Sort descending by end date (newest = top of timeline)
+      sideExps.sort((a, b) => {
+        const aV = a.endY * 12 + a.endM;
+        const bV = b.endY * 12 + b.endM;
+        return bV - aV;
+      });
+
+      // Between consecutive pairs, compute required px/month
+      for (let i = 0; i < sideExps.length - 1; i++) {
+        const upper = sideExps[i]; // card positioned higher (newer end date)
+        const lower = sideExps[i + 1]; // card positioned lower (older end date)
+
+        const upperH = cardHeights[upper.id] ?? FALLBACK_CARD_H;
+        
+        // The top of upper card = getPositionForDate(upper.endY, upper.endM)
+        // The top of lower card = getPositionForDate(lower.endY, lower.endM)
+        // We need: lowerTop - upperTop >= upperH + GAP
+        // i.e., pixels between upper.end and lower.end >= upperH + GAP
+        
+        // The negative sign because lower end date is EARLIER (= larger topPx offset)
+        // segmentMonths is always positive since lower has an earlier end date
+        const actualSegmentMonths = Math.max(1,
+          (upper.endY * 12 + upper.endM) - (lower.endY * 12 + lower.endM)
+        );
+        const requiredPx = upperH + GAP;
+        const minPxPerMonth = requiredPx / actualSegmentMonths;
+
+        segmentScales.push({
+          // The segment is from lower.end (further down timeline) to upper.end
+          fromMVal: lower.endY * 12 + lower.endM,
+          toMVal: upper.endY * 12 + upper.endM,
+          minPx: minPxPerMonth
+        });
+      }
+    });
+
+    return segmentScales;
+  };
+
+  // Helper: given the hovered experience, return the month-value range [from, to]
+  // that should be stretched. We only stretch the gap between the hovered card's top
+  // (its end date) and the nearest same-side card that appears directly below it.
+  // This concentrates the expansion exactly where overlap would occur.
+  const getHoverStretchRange = (hoveredExp) => {
+    const endVal = hoveredExp.endY * 12 + hoveredExp.endM;
+    // Same-side cards with an earlier end date (appear lower on the timeline)
+    const below = experiences.filter(e =>
+      e.side === hoveredExp.side &&
+      e.id !== hoveredExp.id &&
+      (e.endY * 12 + e.endM) < endVal
+    );
+    let fromMVal;
+    if (below.length > 0) {
+      // Nearest below = the one with the latest end date among those below
+      const nearest = below.reduce((best, e) =>
+        (e.endY * 12 + e.endM) > (best.endY * 12 + best.endM) ? e : best
+      , below[0]);
+      fromMVal = nearest.endY * 12 + nearest.endM;
+    } else {
+      // No card below — stretch from the hovered card's own start
+      fromMVal = hoveredExp.startY * 12 + hoveredExp.startM;
+    }
+    return { fromMVal, toMVal: endVal };
+  };
+
+  const segmentScales = computeSegmentScales();
+
+  const getPixelsForMonth = (y, m) => {
+    const mVal = y * 12 + m;
+
+    // Minimum baseline px/month so collapsed cards don't overlap
+    let basePx = (y >= 2025 || y <= 2022) ? 8 : 22;
+    segmentScales.forEach(({ fromMVal, toMVal, minPx }) => {
+      if (mVal > fromMVal && mVal <= toMVal) {
+        basePx = Math.max(basePx, minPx);
+      }
+    });
+
+    // Hover stretch: add extra px/month only in the segment between the hovered
+    // card and the next same-side card below — the exact gap that would overlap.
+    if (hoveredExpId && hoveredExpHeight > 0) {
       const hoveredExp = experiences.find(e => e.id === hoveredExpId);
       if (hoveredExp) {
-        const mVal = y * 12 + m;
-        const startVal = hoveredExp.startY * 12 + hoveredExp.startM;
-        const endVal = hoveredExp.endY * 12 + hoveredExp.endM;
-        
-        if (mVal > startVal && mVal <= endVal) {
-          const duration = Math.max(1, endVal - startVal);
-          // Distribute the expandedHeight + 50px buffer to ensure no overlap and clean spacing
-          px += (hoveredExp.expandedHeight + 50) / duration;
+        const { fromMVal, toMVal } = getHoverStretchRange(hoveredExp);
+        if (mVal > fromMVal && mVal <= toMVal) {
+          const segmentMonths = Math.max(1, toMVal - fromMVal);
+          // Need to fit: hoveredExpHeight (expanded) + 30px gap within this segment
+          basePx += (hoveredExpHeight + 30) / segmentMonths;
         }
       }
     }
-    return px;
+    return basePx;
   };
 
   const getPositionForDate = (y, m) => {
     let px = 0;
     let currentY = END_YEAR;
     let currentM = END_MONTH;
-    
     while (currentY > y || (currentY === y && currentM > m)) {
       currentM--;
       if (currentM === 0) {
@@ -162,7 +299,6 @@ const Home = () => {
 
   return (
     <main className="animate-fade-in" style={{ paddingBottom: '0' }}>
-      {/* Hero Section */}
       <section style={{ padding: '6rem 0 4rem', minHeight: '80vh', display: 'flex', alignItems: 'center' }}>
         <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap-reverse', gap: '4rem' }}>
 
@@ -201,13 +337,14 @@ const Home = () => {
         <div className="container">
           <h2 style={{ fontSize: '2.5rem', marginBottom: '4rem', textAlign: 'center' }}>Experience</h2>
 
+          {/* Dual-column center-spine timeline — works at all screen widths.
+              ResizeObserver measures live card heights so spacing auto-adjusts. */}
           <div style={{ position: 'relative', maxWidth: '1000px', margin: '0 auto', height: `${TIMELINE_HEIGHT}px`, transition: 'height 0.3s ease-in-out' }}>
-            {/* The Central Vertical Spine */}
-            <div style={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', width: '4px', background: 'var(--border-glass)', height: '100%', borderRadius: '4px' }}></div>
+            {/* Central Vertical Spine */}
+            <div style={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', width: '4px', background: 'var(--border-glass)', height: '100%', borderRadius: '4px' }} />
 
             {yearMarkers.map(year => {
               const topPx = getPositionForDate(year, 1);
-
               return (
                 <div key={year} style={{
                   position: 'absolute',
@@ -233,43 +370,34 @@ const Home = () => {
             {experiences.map((exp) => {
               const isLeft = exp.side === 'left';
               const duration = Math.max(1, (exp.endY - exp.startY) * 12 + (exp.endM - exp.startM));
-              
               const topPx = getPositionForDate(exp.endY, exp.endM);
               const startPx = getPositionForDate(exp.startY, exp.startM);
-              
               const dotHeight = Math.max(20, startPx - topPx);
 
-              // Unified pill width for parallel visual tracks next to the spine
-              const dotWidth = '0.5rem';
-              const borderSize = '2px';
-              const shadowSize = '2px';
-
-              // Color coding based on user preferences: invite & coderschool (green), mathnasium & assistant (blue), kesselworks & lead instructor (purple)
               const isGreen = exp.id === 'invite' || exp.id === 'thecoderschool';
               const isBlue = exp.id === 'mathnasium' || exp.id === 'techknowhow_asst';
-              
-              const accentColor = isGreen 
-                ? 'var(--accent-primary)' 
+              const accentColor = isGreen
+                ? 'var(--accent-primary)'
                 : (isBlue ? '#38bdf8' : 'var(--accent-secondary)');
-                
               const borderGlassColor = isGreen
                 ? 'rgba(58, 197, 163, 0.15)'
                 : (isBlue ? 'rgba(56, 189, 248, 0.2)' : 'rgba(168, 85, 247, 0.25)');
 
-              // Position range pills further away from the spine to clear the year badges, and offset horizontally if overlapping
-              const dotOffset = exp.overlapOffset
-                ? `calc(-11.11% + 3.0rem)`
-                : 'calc(-11.11% + 1.8rem)';
+              // Pills cascade away from spine: level 0 (default) = -1.5rem from card edge (in the 3rem gap near spine);
+              // each overlapOffset level adds 1.25rem toward the card so pills don't stack on top of each other.
+              const pillOffset = `calc(-1.5rem + ${(exp.overlapOffset || 0) * 1.25}rem)`;
+              // Shift the card itself slightly away from spine for overlapping entries, giving visual breathing room.
+              const xShift = exp.overlapOffset
+                ? (isLeft ? `-${exp.overlapOffset * 0.75}rem` : `${exp.overlapOffset * 0.75}rem`)
+                : '0';
 
-              // Apply horizontal cascade if it has an overlapOffset
-              const xShift = exp.overlapOffset ? (isLeft ? `-${exp.overlapOffset * 2}rem` : `${exp.overlapOffset * 2}rem`) : '0';
-
-              // Format duration string:
               const yrs = Math.floor(duration / 12);
               const mos = duration % 12;
               let durStr = '';
               if (yrs > 0) durStr += `${yrs} yr${yrs > 1 ? 's' : ''} `;
               if (mos > 0 || yrs === 0) durStr += `${mos} mo${mos > 1 ? 's' : ''}`;
+
+              const isActive = hoveredExpId === exp.id;
 
               return (
                 <div
@@ -277,9 +405,10 @@ const Home = () => {
                   style={{
                     position: 'absolute',
                     top: `${topPx}px`,
-                    width: '45%',
+                    // Fixed gap of 3rem from spine so pills/year badges always have clear space
+                    width: 'calc(50% - 3rem)',
                     [isLeft ? 'left' : 'right']: 0,
-                    zIndex: hoveredExpId === exp.id ? 100 : (exp.overlapOffset ? 10 : 20),
+                    zIndex: isActive ? 100 : (exp.overlapOffset ? 10 : 20),
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: isLeft ? 'flex-end' : 'flex-start',
@@ -287,26 +416,26 @@ const Home = () => {
                   }}
                   onMouseEnter={() => setHoveredExpId(exp.id)}
                   onMouseLeave={() => setHoveredExpId(null)}
+                  onTouchStart={(e) => { e.preventDefault(); setHoveredExpId(isActive ? null : exp.id); }}
                 >
                   <div style={{ position: 'relative', width: '100%' }}>
-                    {/* The Timeline Dot */}
-                    <div
-                      style={{
-                        position: 'absolute',
-                        top: '1.1rem',
-                        width: dotWidth,
-                        height: `${dotHeight}px`,
-                        borderRadius: '999px',
-                        background: accentColor,
-                        border: `${borderSize} solid var(--bg-primary)`,
-                        boxShadow: `0 0 0 ${shadowSize} var(--border-glass)`,
-                        [isLeft ? 'right' : 'left']: dotOffset,
-                        transition: 'top 0.3s ease-in-out, height 0.3s ease-in-out'
-                      }}
-                    ></div>
+                    {/* Duration Pill on Spine — cascades away from spine based on overlapOffset */}
+                    <div style={{
+                      position: 'absolute',
+                      top: '1.1rem',
+                      width: '0.5rem',
+                      height: `${dotHeight}px`,
+                      borderRadius: '999px',
+                      background: accentColor,
+                      border: '2px solid var(--bg-primary)',
+                      boxShadow: `0 0 0 2px var(--border-glass)`,
+                      [isLeft ? 'right' : 'left']: pillOffset,
+                      transition: 'top 0.3s ease-in-out, height 0.3s ease-in-out'
+                    }} />
 
-                    {/* Timeline Card Container */}
+                    {/* Card */}
                     <div
+                      ref={el => { cardRefs.current[exp.id] = el; }}
                       className="glass-panel"
                       style={{
                         width: '100%',
@@ -318,60 +447,56 @@ const Home = () => {
                         transform: `translateX(${xShift})`,
                         border: `1px solid ${borderGlassColor}`
                       }}
-                      onMouseEnter={(e) => { e.currentTarget.style.transform = `translateX(${xShift}) translateY(-5px)` }}
-                      onMouseLeave={(e) => { e.currentTarget.style.transform = `translateX(${xShift})` }}
+                      onMouseEnter={(e) => { e.currentTarget.style.transform = `translateX(${xShift}) translateY(-5px)`; }}
+                      onMouseLeave={(e) => { e.currentTarget.style.transform = `translateX(${xShift})`; }}
                     >
-                      {/* Card Content */}
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                        {/* Header row */}
                         <div style={{ display: 'flex', flexDirection: isLeft ? 'row-reverse' : 'row', alignItems: 'center', gap: '0.6rem' }}>
                           <div style={{ background: '#ffffff', padding: '0.3rem', borderRadius: '6px', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                             <img src={exp.logo} alt={`${exp.title} Logo`} style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
                           </div>
-                          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: isLeft ? 'flex-end' : 'flex-start' }}>
-                            <span style={{ fontSize: '0.75rem', fontWeight: 'bold', color: accentColor, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                          <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', alignItems: isLeft ? 'flex-end' : 'flex-start' }}>
+                            <span style={{ fontSize: '0.7rem', fontWeight: 'bold', color: accentColor, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                               {exp.dateStr} • {durStr.trim()}
                             </span>
-                            <h3 style={{ fontSize: '1.05rem', fontWeight: 'bold', color: 'var(--text-primary)', margin: '0.1rem 0' }}>{exp.title}</h3>
-                            <h4 style={{ fontSize: '0.9rem', fontWeight: '600', color: 'var(--text-secondary)', margin: 0 }}>{exp.role}</h4>
+                            <h3 style={{ fontSize: '0.95rem', fontWeight: 'bold', color: 'var(--text-primary)', margin: '0.1rem 0', wordBreak: 'break-word' }}>{exp.title}</h3>
+                            <h4 style={{ fontSize: '0.82rem', fontWeight: '600', color: 'var(--text-secondary)', margin: 0, wordBreak: 'break-word' }}>{exp.role}</h4>
                           </div>
                         </div>
-                        
-                        <p style={{ fontSize: '0.85rem', color: 'var(--text-tertiary)', marginTop: '0.2rem', marginBottom: '0', lineHeight: '1.35' }}>
+
+                        {/* Short description */}
+                        <p style={{ fontSize: '0.8rem', color: 'var(--text-tertiary)', marginTop: '0.1rem', marginBottom: '0', lineHeight: '1.4' }}>
                           {exp.shortDesc}
                         </p>
 
-                        {/* Bullet Points */}
+                        {/* Bullet Points — revealed on hover/tap */}
                         <div style={{
-                          maxHeight: hoveredExpId === exp.id ? '300px' : '0px',
-                          opacity: hoveredExpId === exp.id ? 1 : 0,
+                          maxHeight: isActive ? '400px' : '0px',
+                          opacity: isActive ? 1 : 0,
                           overflow: 'hidden',
-                          transition: 'max-height 0.3s ease-in-out, opacity 0.3s ease-in-out, margin-top 0.3s ease-in-out',
-                          marginTop: hoveredExpId === exp.id ? '0.6rem' : '0'
+                          transition: 'max-height 0.35s ease-in-out, opacity 0.3s ease-in-out, margin-top 0.3s ease-in-out',
+                          marginTop: isActive ? '0.5rem' : '0'
                         }}>
-                          <ul style={{ 
-                            display: 'flex', 
-                            flexDirection: 'column', 
-                            gap: '0.4rem', 
-                            fontSize: '0.8rem', 
-                            color: 'var(--text-secondary)',
-                            listStyleType: 'none',
-                            paddingLeft: isLeft ? '0' : '1.25rem',
-                            paddingRight: isLeft ? '1.25rem' : '0',
-                            textAlign: isLeft ? 'right' : 'left'
-                          }}>
+                          <ul
+                            ref={el => { bulletRefs.current[exp.id] = el; }}
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'column',
+                              gap: '0.4rem',
+                              fontSize: '0.78rem',
+                              color: 'var(--text-secondary)',
+                              listStyleType: 'none',
+                              paddingLeft: isLeft ? '0' : '1.1rem',
+                              paddingRight: isLeft ? '1.1rem' : '0',
+                              textAlign: isLeft ? 'right' : 'left'
+                            }}>
                             {exp.bullets.map((bullet, idx) => (
                               <li key={idx} style={{ position: 'relative' }}>
-                                {isLeft ? (
-                                  <>
-                                    <span style={{ position: 'absolute', right: '-1.25rem', color: accentColor }}>•</span>
-                                    {bullet}
-                                  </>
-                                ) : (
-                                  <>
-                                    <span style={{ position: 'absolute', left: '-1.25rem', color: accentColor }}>•</span>
-                                    {bullet}
-                                  </>
-                                )}
+                                {isLeft
+                                  ? <><span style={{ position: 'absolute', right: '-1.1rem', color: accentColor }}>•</span>{bullet}</>
+                                  : <><span style={{ position: 'absolute', left: '-1.1rem', color: accentColor }}>•</span>{bullet}</>
+                                }
                               </li>
                             ))}
                           </ul>

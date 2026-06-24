@@ -14,13 +14,26 @@ const Header = () => {
 
   const scrollToSection = (id) => {
     setIsMenuOpen(false); // Close menu when clicking a link
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    } else if (location.pathname !== '/') {
-      // If we are not on the home page, we can't scroll to the section.
-      window.location.href = '/#/';
-    }
+    
+    // Use setTimeout to allow the mobile dropdown to close and the DOM to update
+    // before calculating the scroll position, otherwise it scrolls too far down.
+    setTimeout(() => {
+      const element = document.getElementById(id);
+      if (element) {
+        // Adjust for sticky header height (approx 80px)
+        const headerOffset = 80;
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+        
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      } else if (location.pathname !== '/') {
+        // If we are not on the home page, we can't scroll to the section.
+        window.location.href = '/#/';
+      }
+    }, 50);
   };
 
   const isMobile = windowWidth < 768;

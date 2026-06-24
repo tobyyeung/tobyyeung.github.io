@@ -164,7 +164,7 @@ const Home = () => {
       const hoveredExp = experiences.find(e => e.id === hoveredExpId);
       if (!hoveredExp) return;
 
-      const isMobileTimeline = windowWidth < 768;
+      const isMobileTimeline = windowWidth < 650;
       const relevantExps = isMobileTimeline ? [...experiences] : experiences.filter(e => e.side === hoveredExp.side);
       relevantExps.sort((a, b) => (b.endY * 12 + b.endM) - (a.endY * 12 + a.endM));
 
@@ -235,7 +235,7 @@ const Home = () => {
 
   const TIMELINE_HEIGHT = getPositionForDate(START_YEAR, START_MONTH) + 30;
   const yearMarkers = [2026, 2025, 2024, 2023, 2022];
-  const isMobileTimeline = windowWidth < 768;
+  const isMobileTimeline = windowWidth < 650;
 
   return (
     <main className="animate-fade-in" style={{ paddingBottom: '0' }}>
@@ -282,14 +282,14 @@ const Home = () => {
             position: 'relative',
             maxWidth: '1000px',
             margin: '0 auto',
-            height: windowWidth < 768 ? 'auto' : `${TIMELINE_HEIGHT}px`,
-            display: windowWidth < 768 ? 'flex' : 'block',
+            height: windowWidth < 650 ? 'auto' : `${TIMELINE_HEIGHT}px`,
+            display: windowWidth < 650 ? 'flex' : 'block',
             flexDirection: 'column',
             gap: '2rem',
             transition: 'height 0.3s ease-in-out'
           }}>
             {/* The Central Vertical Spine */}
-            <div style={{ position: 'absolute', left: windowWidth < 768 ? '1.5rem' : '50%', top: 0, bottom: 0, transform: 'translateX(-50%)', width: '4px', background: 'var(--border-glass)', borderRadius: '4px' }}></div>
+            <div style={{ position: 'absolute', left: windowWidth < 650 ? '1.5rem' : '50%', top: 0, bottom: 0, transform: 'translateX(-50%)', width: '4px', background: 'var(--border-glass)', borderRadius: '4px' }}></div>
 
             {!isMobileTimeline && yearMarkers.map(year => {
               const topPx = getPositionForDate(year, 1);
@@ -298,7 +298,7 @@ const Home = () => {
                 <div key={year} style={{
                   position: 'absolute',
                   top: `${topPx}px`,
-                  left: windowWidth < 768 ? '1.5rem' : '50%',
+                  left: windowWidth < 650 ? '1.5rem' : '50%',
                   transform: 'translate(-50%, -50%)',
                   background: 'var(--bg-primary)',
                   border: '1px solid var(--border-glass)',
@@ -430,15 +430,27 @@ const Home = () => {
                             <div style={{ background: '#ffffff', padding: '0.2rem', borderRadius: '6px', width: 'clamp(24px, 4vw, 36px)', height: 'clamp(24px, 4vw, 36px)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                               <img src={exp.logo} alt={`${exp.title} Logo`} style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
                             </div>
-                            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: renderAsLeft ? 'flex-end' : 'flex-start', minWidth: 0 }}>
-                              {/* Date + duration — duration hidden < 850px, date hidden < 750px */}
-                              {windowWidth >= 750 && (
-                                <span style={{ fontSize: 'clamp(0.6rem, 0.8vw, 0.75rem)', fontWeight: 'bold', color: accentColor, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                                  {exp.dateStr}{windowWidth >= 850 && ` • ${durStr.trim()}`}
-                                </span>
+                            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: renderAsLeft ? 'flex-end' : 'flex-start', minWidth: 0, width: '100%' }}>
+                              {/* Mobile: Date to the right of title/role. Desktop: Date on top. */}
+                              {windowWidth < 650 ? (
+                                <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', width: '100%', gap: '0.5rem' }}>
+                                  <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+                                    <h3 style={{ fontSize: 'clamp(0.7rem, 1.2vw, 1.05rem)', fontWeight: 'bold', color: 'var(--text-primary)', margin: '0.1rem 0 0', wordBreak: 'break-word' }}>{exp.title}</h3>
+                                    <h4 style={{ fontSize: 'clamp(0.65rem, 1vw, 0.9rem)', fontWeight: '600', color: 'var(--text-secondary)', margin: 0, wordBreak: 'break-word' }}>{exp.role}</h4>
+                                  </div>
+                                  <span style={{ fontSize: '0.6rem', fontWeight: 'bold', color: accentColor, textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'right', whiteSpace: 'nowrap', marginTop: '0.2rem', flexShrink: 0 }}>
+                                    {exp.dateStr}
+                                  </span>
+                                </div>
+                              ) : (
+                                <>
+                                  <span style={{ fontSize: 'clamp(0.6rem, 0.8vw, 0.75rem)', fontWeight: 'bold', color: accentColor, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                                    {exp.dateStr}{windowWidth >= 850 && ` • ${durStr.trim()}`}
+                                  </span>
+                                  <h3 style={{ fontSize: 'clamp(0.7rem, 1.2vw, 1.05rem)', fontWeight: 'bold', color: 'var(--text-primary)', margin: '0.1rem 0 0', wordBreak: 'break-word' }}>{exp.title}</h3>
+                                  <h4 style={{ fontSize: 'clamp(0.65rem, 1vw, 0.9rem)', fontWeight: '600', color: 'var(--text-secondary)', margin: 0, wordBreak: 'break-word' }}>{exp.role}</h4>
+                                </>
                               )}
-                              <h3 style={{ fontSize: 'clamp(0.7rem, 1.2vw, 1.05rem)', fontWeight: 'bold', color: 'var(--text-primary)', margin: '0.1rem 0 0', wordBreak: 'break-word' }}>{exp.title}</h3>
-                              <h4 style={{ fontSize: 'clamp(0.65rem, 1vw, 0.9rem)', fontWeight: '600', color: 'var(--text-secondary)', margin: 0, wordBreak: 'break-word' }}>{exp.role}</h4>
                             </div>
                           </div>
 

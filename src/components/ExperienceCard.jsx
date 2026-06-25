@@ -37,13 +37,8 @@ const ExperienceCard = ({
         alignItems: renderAsLeft ? 'flex-end' : 'flex-start',
         transition: isMobileTimeline ? 'none' : 'top 0.3s ease-in-out'
       }}
-      onMouseEnter={() => !isMobileTimeline && setHoveredExpId(exp.id)}
-      onMouseLeave={() => !isMobileTimeline && setHoveredExpId(null)}
-      onClick={() => {
-        if (isMobileTimeline) {
-          setHoveredExpId(prev => (prev === exp.id ? null : exp.id));
-        }
-      }}
+      onMouseEnter={() => setHoveredExpId(exp.id)}
+      onMouseLeave={() => setHoveredExpId(null)}
     >
       <div style={{ position: 'relative', width: '100%' }}>
         {/* The Timeline Dot */}

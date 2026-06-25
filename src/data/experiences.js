@@ -12,7 +12,7 @@ export const experiences = [
   },
   {
     id: 'uiuc_tech_services', title: 'Technology Services, UIUC', role: 'Site Consultant', dateStr: 'Apr 2026 - Present',
-    logo: '/images/education/uiuc.png',
+    logo: '/images/experience/uiuc.jpg',
     startM: 4, startY: 2026, endM: 8, endY: 2026, side: 'right', expandedHeight: 160,
     shortDesc: 'Provided frontline technical support and ensured seamless operation of computing labs for students and faculty.',
     bullets: [

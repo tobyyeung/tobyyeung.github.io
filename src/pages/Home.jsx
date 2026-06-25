@@ -16,12 +16,13 @@ const Home = () => {
   const [hoveredExpId, setHoveredExpId] = useState(null);
   const [activeSkillCategory, setActiveSkillCategory] = useState("Languages");
   const [hoveredExpStretch, setHoveredExpStretch] = useState(0);
+  const [staticStretches, setStaticStretches] = useState({});
   const cardRefs = useRef({});
 
   const { windowWidth, isMobileSm, isMobileLg, isDesktopSm } = useBreakpoints();
 
   // Timeline setup
-  const TIMELINE_HEIGHT = getPositionForDate(TIMELINE_START_YEAR, TIMELINE_START_MONTH, experiences, null, 0) + 30;
+  const TIMELINE_HEIGHT = getPositionForDate(TIMELINE_START_YEAR, TIMELINE_START_MONTH, experiences, null, 0, staticStretches) + 30;
   const yearMarkers = [2026, 2025, 2024, 2023, 2022];
   const isMobileTimeline = isMobileLg;
 
@@ -51,8 +52,8 @@ const Home = () => {
 
       let gap = Infinity;
       if (nextExp) {
-        const baseTop = getBasePositionForDate(hoveredExp.endY, hoveredExp.endM);
-        const nextTop = getBasePositionForDate(nextExp.endY, nextExp.endM);
+        const baseTop = getPositionForDate(hoveredExp.endY, hoveredExp.endM, experiences, null, 0, staticStretches);
+        const nextTop = getPositionForDate(nextExp.endY, nextExp.endM, experiences, null, 0, staticStretches);
         gap = nextTop - baseTop;
       }
 
@@ -74,7 +75,63 @@ const Home = () => {
       clearInterval(interval);
       clearTimeout(timeout);
     };
-  }, [hoveredExpId, isMobileTimeline]);
+  }, [hoveredExpId, isMobileTimeline, staticStretches]);
+
+  useEffect(() => {
+    const checkStaticHeights = () => {
+      if (isMobileTimeline) return;
+      const newStretches = {};
+      
+      const leftExps = experiences.filter(e => e.side === 'left').sort((a, b) => (b.endY * 12 + b.endM) - (a.endY * 12 + a.endM));
+      const rightExps = experiences.filter(e => e.side === 'right').sort((a, b) => (b.endY * 12 + b.endM) - (a.endY * 12 + a.endM));
+      
+      const calculateSide = (exps) => {
+        for (let i = 0; i < exps.length - 1; i++) {
+          const exp = exps[i];
+          const nextExp = exps[i + 1];
+          const el = cardRefs.current[exp.id];
+          if (!el) continue;
+          
+          const baseTop = getBasePositionForDate(exp.endY, exp.endM);
+          const nextTop = getBasePositionForDate(nextExp.endY, nextExp.endM);
+          const gap = nextTop - baseTop;
+          
+          const currentHeight = el.offsetHeight;
+          const buffer = 40;
+          const requiredStretch = Math.max(0, currentHeight - gap + buffer);
+          
+          if (requiredStretch > 0) {
+            newStretches[exp.id] = requiredStretch;
+          }
+        }
+      };
+
+      calculateSide(leftExps);
+      calculateSide(rightExps);
+      
+      setStaticStretches(prev => {
+        let changed = false;
+        if (Object.keys(newStretches).length !== Object.keys(prev).length) changed = true;
+        else {
+          for (const key in newStretches) {
+            if (newStretches[key] !== prev[key]) changed = true;
+          }
+        }
+        return changed ? newStretches : prev;
+      });
+    };
+
+    checkStaticHeights();
+    const interval = setInterval(checkStaticHeights, 200);
+    const timeout = setTimeout(() => clearInterval(interval), 2000);
+    
+    window.addEventListener('resize', checkStaticHeights);
+    return () => {
+      clearInterval(interval);
+      clearTimeout(timeout);
+      window.removeEventListener('resize', checkStaticHeights);
+    };
+  }, [windowWidth, isMobileTimeline]);
 
   // Sorting experiences 
   const sortedExperiences = useMemo(() => {
@@ -87,6 +144,38 @@ const Home = () => {
       })
       : experiences;
   }, [isMobileTimeline]);
+
+  // Chronological Overlap Calculation
+  const expOverlapLevels = useMemo(() => {
+    const levels = {};
+    const calculateLevels = (side) => {
+      const sideExps = experiences.filter(e => e.side === side).sort((a, b) => (b.endY * 12 + b.endM) - (a.endY * 12 + a.endM));
+      const active = [];
+      
+      for (const exp of sideExps) {
+        const start = exp.startY * 12 + exp.startM;
+        const end = exp.endY * 12 + exp.endM;
+        
+        let level = 0;
+        const usedLevels = new Set();
+        
+        for (const act of active) {
+          if (act.start < end && act.end > start) {
+            usedLevels.add(act.level);
+          }
+        }
+        
+        while (usedLevels.has(level)) level++;
+        
+        levels[exp.id] = level;
+        active.push({ id: exp.id, start, end, level });
+      }
+    };
+
+    calculateLevels('left');
+    calculateLevels('right');
+    return levels;
+  }, []);
 
   return (
     <main className="animate-fade-in" style={{ paddingBottom: '0' }}>
@@ -125,7 +214,7 @@ const Home = () => {
       {/* Experience Section */}
       <section id="experience" style={{ padding: '4rem 0', background: 'var(--bg-secondary)' }}>
         <div className="container">
-          <h2 style={{ fontSize: '2.5rem', marginBottom: '4rem', textAlign: 'center' }}>Experience</h2>
+          <h2 className="section-title">Experience</h2>
 
           <div style={{
             position: 'relative',
@@ -141,7 +230,7 @@ const Home = () => {
             <div style={{ position: 'absolute', left: isMobileTimeline ? '1.5rem' : '50%', top: 0, bottom: 0, transform: 'translateX(-50%)', width: '4px', background: 'var(--border-glass)', borderRadius: '4px' }}></div>
 
             {!isMobileTimeline && yearMarkers.map(year => {
-              const topPx = getPositionForDate(year, 1, experiences, null, 0);
+              const topPx = getPositionForDate(year, 1, experiences, null, 0, staticStretches);
 
               return (
                 <div key={year} style={{
@@ -169,8 +258,8 @@ const Home = () => {
               const isCardOnLeft = exp.side === 'left';
               const renderAsLeft = isMobileTimeline ? false : isCardOnLeft;
 
-              const topPx = getPositionForDate(exp.endY, exp.endM, experiences, hoveredExpId, hoveredExpStretch);
-              const startPx = getPositionForDate(exp.startY, exp.startM, experiences, hoveredExpId, hoveredExpStretch);
+              const topPx = getPositionForDate(exp.endY, exp.endM, experiences, hoveredExpId, hoveredExpStretch, staticStretches);
+              const startPx = getPositionForDate(exp.startY, exp.startM, experiences, hoveredExpId, hoveredExpStretch, staticStretches);
 
               const dotHeight = Math.max(20, startPx - topPx);
               const dotWidth = '0.5rem';
@@ -180,8 +269,10 @@ const Home = () => {
               const accentColor = isGreen ? 'var(--accent-primary)' : (isBlue ? '#38bdf8' : 'var(--accent-secondary)');
               const borderGlassColor = isGreen ? 'rgba(58, 197, 163, 0.15)' : (isBlue ? 'rgba(56, 189, 248, 0.2)' : 'rgba(168, 85, 247, 0.25)');
 
-              const dotOffset = exp.overlapOffset ? '-0.5rem' : '-1.5rem';
-              const xShift = exp.overlapOffset && !isMobileTimeline ? (renderAsLeft ? `-${exp.overlapOffset * 2}rem` : `${exp.overlapOffset * 2}rem`) : '0';
+              const overlapLevel = expOverlapLevels[exp.id] || 0;
+              const dotOffset = overlapLevel > 0 ? `-${1.5 - overlapLevel * 1}rem` : '-1.5rem';
+              const xShiftAmount = overlapLevel * 2;
+              const xShift = overlapLevel > 0 && !isMobileTimeline ? (renderAsLeft ? `-${xShiftAmount}rem` : `${xShiftAmount}rem`) : '0';
 
               return (
                 <ExperienceCard
@@ -212,7 +303,7 @@ const Home = () => {
         <div className="container">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '3rem' }}>
             <div>
-              <h2 style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>Projects</h2>
+              <h2 className="section-title" style={{ marginBottom: '0.5rem', textAlign: 'left' }}>Projects</h2>
             </div>
           </div>
 
@@ -236,7 +327,7 @@ const Home = () => {
       {/* Education Section */}
       <section id="education" style={{ padding: '4rem 0', background: 'var(--bg-secondary)' }}>
         <div className="container">
-          <h2 style={{ fontSize: '2.5rem', marginBottom: '2rem' }}>Education</h2>
+          <h2 className="section-title" style={{ marginBottom: '2rem', textAlign: 'left' }}>Education</h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
             <EducationCard
               institution="University of Illinois Urbana-Champaign"
@@ -261,7 +352,7 @@ const Home = () => {
       {/* Skills Section */}
       <section id="skills" style={{ padding: '6rem 0' }}>
         <div className="container">
-          <h2 style={{ fontSize: '3rem', marginBottom: '3rem', textAlign: 'center' }}>Skills</h2>
+          <h2 className="section-title">Skills</h2>
 
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center', marginBottom: '4rem' }}>
             {Object.keys(skillsData).map(category => (
@@ -359,7 +450,7 @@ const Home = () => {
       <section id="contact" style={{ padding: '6rem 0', background: 'var(--bg-secondary)' }}>
         <div className="container" style={{ maxWidth: '800px' }}>
           <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-            <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>Contact Me</h2>
+            <h2 className="section-title" style={{ marginBottom: '1rem' }}>Contact Me</h2>
             <p style={{ color: 'var(--text-secondary)', maxWidth: '600px', margin: '0 auto' }}>
               I'm currently open to new opportunities. Whether you have a question or just want to say hi, feel free to drop a message!
             </p>
@@ -431,6 +522,26 @@ const Home = () => {
         onClose={() => setSelectedProject(null)} 
       />
 
+      {/* Footer */}
+      <footer style={{ 
+        padding: '1rem', 
+        borderTop: '1px solid rgba(255, 255, 255, 0.05)', 
+        color: 'var(--text-tertiary)', 
+        background: 'var(--bg-primary)'
+      }}>
+        <div className="container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem', justifyContent: 'center', fontSize: '0.85rem', fontWeight: '500' }}>
+            <a href="mailto:tobycyeung@gmail.com" style={{ color: 'var(--text-tertiary)', transition: 'color 0.2s' }} onMouseOver={(e) => e.currentTarget.style.color = 'var(--accent-primary)'} onMouseOut={(e) => e.currentTarget.style.color = 'var(--text-tertiary)'}>Email</a>
+            <a href="https://www.linkedin.com/in/yeung-toby/" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text-tertiary)', transition: 'color 0.2s' }} onMouseOver={(e) => e.currentTarget.style.color = 'var(--accent-primary)'} onMouseOut={(e) => e.currentTarget.style.color = 'var(--text-tertiary)'}>LinkedIn</a>
+            <a href="https://github.com/tobyyeung" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text-tertiary)', transition: 'color 0.2s' }} onMouseOver={(e) => e.currentTarget.style.color = 'var(--accent-primary)'} onMouseOut={(e) => e.currentTarget.style.color = 'var(--text-tertiary)'}>GitHub</a>
+          </div>
+
+          <div style={{ textAlign: 'center', fontSize: '0.8rem', lineHeight: '1.4' }}>
+            <p>Based in Santa Clara, CA</p>
+            <p>&copy; {new Date().getFullYear()} Toby Yeung. All rights reserved.</p>
+          </div>
+        </div>
+      </footer>
     </main>
   );
 };

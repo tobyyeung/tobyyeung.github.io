@@ -152,12 +152,12 @@ const ExperienceCard = ({
                       {renderAsLeft ? (
                         <>
                           <span style={{ position: 'absolute', right: '-1.25rem', color: accentColor }}>•</span>
-                          {bullet}
+                          <span dangerouslySetInnerHTML={{ __html: bullet }} />
                         </>
                       ) : (
                         <>
                           <span style={{ position: 'absolute', left: '-1.25rem', color: accentColor }}>•</span>
-                          {bullet}
+                          <span dangerouslySetInnerHTML={{ __html: bullet }} />
                         </>
                       )}
                     </li>

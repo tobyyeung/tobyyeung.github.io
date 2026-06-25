@@ -8,7 +8,7 @@ const Header = () => {
 
   const scrollToSection = (id) => {
     setIsMenuOpen(false); // Close menu when clicking a link
-    
+
     // Use setTimeout to allow the mobile dropdown to close and the DOM to update
     // before calculating the scroll position, otherwise it scrolls too far down.
     setTimeout(() => {
@@ -18,7 +18,7 @@ const Header = () => {
         const headerOffset = 80;
         const elementPosition = element.getBoundingClientRect().top;
         const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-        
+
         window.scrollTo({
           top: offsetPosition,
           behavior: 'smooth'
@@ -37,7 +37,7 @@ const Header = () => {
       <div className="container" style={{ display: 'flex', flexDirection: 'column' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? '1rem' : '1.5rem' }}>
-            <Link to="/" style={{ fontSize: '1.35rem', fontWeight: 'bold', fontFamily: 'var(--font-display)', textDecoration: 'none', display: 'flex', alignItems: 'center', lineHeight: 1 }}>
+            <Link to="/" style={{ fontSize: '1.35rem', fontWeight: 'bold', fontFamily: 'var(--font-display)', textDecoration: 'none', display: 'flex', alignItems: 'center', lineHeight: 1.2, padding: '0.1rem 0' }}>
               <span className="gradient-text">Toby Yeung</span>
             </Link>
             <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
@@ -49,10 +49,10 @@ const Header = () => {
               </a>
             </div>
           </div>
-          
+
           {isMobile ? (
-            <button 
-              onClick={() => setIsMenuOpen(!isMenuOpen)} 
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
               style={{ background: 'none', border: 'none', color: 'rgba(255, 255, 255, 0.85)', cursor: 'pointer', padding: '0.5rem' }}
               aria-label="Toggle menu"
             >
@@ -77,7 +77,7 @@ const Header = () => {
               <button onClick={() => scrollToSection('projects')} style={{ fontFamily: 'var(--font-casual)', color: 'rgba(255, 255, 255, 0.85)', fontSize: '1.1rem', fontWeight: '700', transition: 'color 0.2s', background: 'none', border: 'none', cursor: 'pointer' }}>Projects</button>
               <button onClick={() => scrollToSection('education')} style={{ fontFamily: 'var(--font-casual)', color: 'rgba(255, 255, 255, 0.85)', fontSize: '1.1rem', fontWeight: '700', transition: 'color 0.2s', background: 'none', border: 'none', cursor: 'pointer' }}>Education</button>
               <button onClick={() => scrollToSection('skills')} style={{ fontFamily: 'var(--font-casual)', color: 'rgba(255, 255, 255, 0.85)', fontSize: '1.1rem', fontWeight: '700', transition: 'color 0.2s', background: 'none', border: 'none', cursor: 'pointer' }}>Skills</button>
-              <a href="mailto:tobycyeung@gmail.com" className="btn btn-primary" style={{ marginLeft: '0', padding: '0.45rem 1rem', fontSize: '1rem' }}>Contact Me</a>
+              <button onClick={() => scrollToSection('contact')} className="btn btn-primary" style={{ marginLeft: '0', padding: '0.45rem 1rem', fontSize: '1rem', fontFamily: 'var(--font-sans)', borderRadius: 'var(--radius-full)' }}>Contact Me</button>
             </nav>
           )}
         </div>
@@ -89,7 +89,7 @@ const Header = () => {
             <button onClick={() => scrollToSection('projects')} style={{ fontFamily: 'var(--font-casual)', color: 'rgba(255, 255, 255, 0.85)', fontSize: '1.1rem', fontWeight: '700', background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', padding: '0.5rem 0' }}>Projects</button>
             <button onClick={() => scrollToSection('education')} style={{ fontFamily: 'var(--font-casual)', color: 'rgba(255, 255, 255, 0.85)', fontSize: '1.1rem', fontWeight: '700', background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', padding: '0.5rem 0' }}>Education</button>
             <button onClick={() => scrollToSection('skills')} style={{ fontFamily: 'var(--font-casual)', color: 'rgba(255, 255, 255, 0.85)', fontSize: '1.1rem', fontWeight: '700', background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', padding: '0.5rem 0' }}>Skills</button>
-            <a href="mailto:tobycyeung@gmail.com" className="btn btn-primary" style={{ marginTop: '0.5rem', padding: '0.6rem 1rem', fontSize: '1rem', textAlign: 'center' }}>Contact Me</a>
+            <button onClick={() => scrollToSection('contact')} className="btn btn-primary" style={{ marginTop: '0.5rem', padding: '0.6rem 1rem', fontSize: '1rem', textAlign: 'center', fontFamily: 'var(--font-sans)', borderRadius: 'var(--radius-full)' }}>Contact Me</button>
           </nav>
         )}
       </div>

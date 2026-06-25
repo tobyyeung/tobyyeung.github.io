@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react';
+import { useBreakpoints } from '../hooks/useBreakpoints';
 
 const ProjectModal = ({ project, onClose }) => {
+  const { isTablet } = useBreakpoints();
+
   // Prevent scrolling on the body when modal is open
   useEffect(() => {
     if (project) {
@@ -39,12 +42,15 @@ const ProjectModal = ({ project, onClose }) => {
           borderRadius: 'var(--radius-lg)',
           border: '1px solid var(--border-glass)',
           width: '100%',
-          maxWidth: '800px',
+          maxWidth: '1000px',
           maxHeight: '90vh',
           overflowY: 'auto',
           position: 'relative',
           boxShadow: 'var(--shadow-lg)',
-          animation: 'slideUp 0.3s ease-out forwards'
+          animation: 'slideUp 0.3s ease-out forwards',
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden'
         }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -73,22 +79,31 @@ const ProjectModal = ({ project, onClose }) => {
           &times;
         </button>
 
-        {/* Image Header */}
-        <div style={{ width: '100%', height: '220px' }}>
-          <img 
-            src={project.imageUrl || `https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=800&sig=${project.id}`} 
-            alt={project.title} 
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-          />
-        </div>
-
-        {/* Details Section */}
-        <div style={{ padding: '2.5rem' }}>
-          <h2 style={{ fontSize: '2.5rem', marginBottom: '1.5rem', color: 'var(--text-primary)' }}>
-            {project.title}
-          </h2>
-
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '2rem' }}>
+        {/* Top Header Section (Title, Buttons, and Tags span across both sides) */}
+        <div style={{ padding: '2.5rem 2.5rem 1rem 2.5rem', display: 'flex', flexDirection: 'column', gap: '1.5rem', borderBottom: '1px solid rgba(255, 255, 255, 0.05)' }}>
+          {/* Title and Buttons Row */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem', paddingRight: '2rem' }}>
+            <h2 style={{ fontSize: '2.5rem', color: 'var(--text-primary)', lineHeight: 1.1, margin: 0 }}>
+              {project.title}
+            </h2>
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', alignItems: 'flex-end' }}>
+              {project.websiteUrl && (
+                <a href={project.websiteUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 1.25rem', fontSize: '0.9rem' }}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                  Live Demo
+                </a>
+              )}
+              {project.githubUrl && (
+                <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.5rem 1.25rem', fontSize: '0.9rem' }}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.02c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A4.8 4.8 0 0 0 8 18v4"></path></svg>
+                  Source Code
+                </a>
+              )}
+            </div>
+          </div>
+          {/* Tags */}
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
             {project.technologies && project.technologies.map((tech, idx) => (
               <span 
                 key={idx} 
@@ -105,28 +120,33 @@ const ProjectModal = ({ project, onClose }) => {
               </span>
             ))}
           </div>
+        </div>
 
-          <div 
-            style={{ 
-              color: 'var(--text-secondary)', 
-              fontSize: '1.1rem', 
-              lineHeight: '1.8',
-              marginBottom: '2.5rem'
-            }}
-            dangerouslySetInnerHTML={{ __html: project.description }}
-          />
-          
-          <div style={{ display: 'flex', gap: '1rem' }}>
-            {project.demoUrl && (
-              <a href={project.demoUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ padding: '0.75rem 1.5rem', fontSize: '1rem' }}>
-                Live Demo
-              </a>
-            )}
-            {project.repoUrl && (
-              <a href={project.repoUrl} target="_blank" rel="noopener noreferrer" className="btn btn-secondary" style={{ padding: '0.75rem 1.5rem', fontSize: '1rem' }}>
-                Source Code
-              </a>
-            )}
+        {/* Content Section (Split into left and right) */}
+        <div style={{ display: 'flex', flexDirection: isTablet ? 'column-reverse' : 'row', flex: 1 }}>
+          {/* Details Section (Left side) */}
+          <div style={{ flex: '1 1 50%', padding: '2.5rem', display: 'flex', flexDirection: 'column' }}>
+
+
+            <div 
+              className="modal-description"
+              style={{ 
+                color: 'rgba(255, 255, 255, 0.85)', 
+                fontSize: '1.1rem', 
+                lineHeight: '1.8',
+                marginBottom: '2.5rem'
+              }}
+              dangerouslySetInnerHTML={{ __html: project.description }}
+            />
+          </div>
+
+          {/* Image Section (Right side) */}
+          <div style={{ flex: '1 1 50%', minHeight: isTablet ? '220px' : 'auto', background: 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: isTablet ? '2rem 2rem 0' : '2.5rem' }}>
+            <img 
+              src={project.imageUrl || `https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=800&sig=${project.id}`} 
+              alt={project.title} 
+              style={{ maxWidth: '100%', maxHeight: isTablet ? '300px' : '100%', objectFit: 'contain', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-lg)' }}
+            />
           </div>
         </div>
       </div>
@@ -140,6 +160,10 @@ const ProjectModal = ({ project, onClose }) => {
         @keyframes slideUp {
           from { transform: translateY(20px); opacity: 0; }
           to { transform: translateY(0); opacity: 1; }
+        }
+        .modal-description strong {
+          color: #ffffff;
+          font-weight: 700;
         }
       `}</style>
     </div>

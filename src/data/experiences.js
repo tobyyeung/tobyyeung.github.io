@@ -5,9 +5,20 @@ export const experiences = [
     startM: 6, startY: 2026, endM: 8, endY: 2026, side: 'left', expandedHeight: 180,
     shortDesc: 'Architecting intelligent RAG systems and full-stack applications to empower educators with data-driven insights.',
     bullets: [
-      'Developed the Keating Framework, a full-stack AI web application using FastAPI and Python to assist educators in identifying at-risk students by synthesizing academic and behavioral data.',
-      'Architected a Retrieval-Augmented Generation (RAG) system utilizing a DuckDB backend and ChromaDB, optimizing query routing and reducing LLM dependency.',
-      'Engineered a local machine learning inference pipeline deploying quantized LLMs (Ollama Gemma) and semantic embeddings, ensuring data privacy while eliminating API latency.'
+      'Developed the <strong>Keating Framework</strong>, a full-stack AI web application using <strong>FastAPI</strong> and <strong>Python</strong> to assist educators in identifying at-risk students by synthesizing academic and behavioral data.',
+      'Architected a <strong>Retrieval-Augmented Generation (RAG)</strong> system utilizing a <strong>DuckDB</strong> backend and <strong>ChromaDB</strong>, optimizing query routing and reducing LLM dependency.',
+      'Engineered a local machine learning inference pipeline deploying quantized LLMs (<strong>Ollama Gemma</strong>) and semantic embeddings, ensuring data privacy while eliminating API latency.'
+    ]
+  },
+  {
+    id: 'uiuc_tech_services', title: 'Technology Services, UIUC', role: 'Site Consultant', dateStr: 'Apr 2026 - Present',
+    logo: '/images/education/uiuc.png',
+    startM: 4, startY: 2026, endM: 8, endY: 2026, side: 'right', expandedHeight: 160,
+    shortDesc: 'Provided frontline technical support and ensured seamless operation of computing labs for students and faculty.',
+    bullets: [
+      'Delivered <strong>frontline technical support</strong> and customer service to students, faculty, and staff across <strong>7 campus computing labs</strong>.',
+      'Troubleshot <strong>hardware and software issues</strong>, managed urgent classroom technology needs, and escalated complex incidents via <strong>ticketing systems</strong>.',
+      'Maintained lab operations by conducting regular walkthroughs, monitoring equipment, and utilizing <strong>Microsoft Teams</strong> for rapid communication with management.'
     ]
   },
   {
@@ -16,19 +27,19 @@ export const experiences = [
     startM: 1, startY: 2024, endM: 8, endY: 2025, side: 'right', expandedHeight: 150,
     shortDesc: 'Provided tailored mathematical instruction and competition coaching for K-12 students of all learning abilities.',
     bullets: [
-      'Provided 1-on-1 to 1-on-4 tutoring to 300+ students (K–12), from arithmetic to SAT Math and pre-calculus.',
-      'Coached 10+ Math Kangaroo International medalists for competitions.',
-      'Created tailored lesson plans for students with dyscalculia, dyslexia, autism, and ADHD.'
+      'Provided <strong>1-on-1 to 1-on-4 tutoring</strong> to <strong>300+ students (K–12)</strong>, from arithmetic to <strong>SAT Math</strong> and <strong>pre-calculus</strong>.',
+      'Coached <strong>10+ Math Kangaroo International medalists</strong> for competitions.',
+      'Created tailored lesson plans for students with <strong>dyscalculia, dyslexia, autism, and ADHD</strong>.'
     ]
   },
   {
     id: 'techknowhow_lead', title: 'TechKnowHow Franchises', role: 'Lead Instructor', dateStr: 'May 2024 - Aug 2024',
     logo: '/images/experience/techknowhow.jpg',
-    startM: 5, startY: 2024, endM: 8, endY: 2024, side: 'right', overlapOffset: 1, expandedHeight: 90,
+    startM: 5, startY: 2024, endM: 8, endY: 2024, side: 'right', expandedHeight: 90,
     shortDesc: 'Led robotics and coding classes of 20+ students, ensuring individualized instruction in Python and Roblox.',
     bullets: [
-      'Mentored 250+ students in robotics and coding using Scratch, Roblox, and Minecraft.',
-      'Managed classroom dynamics and taught fundamental computer science concepts.'
+      'Mentored <strong>250+ students</strong> in robotics and coding using <strong>Scratch, Roblox, and Minecraft</strong>.',
+      'Managed <strong>classroom dynamics</strong> and taught fundamental computer science concepts.'
     ]
   },
   {
@@ -37,18 +48,18 @@ export const experiences = [
     startM: 8, startY: 2023, endM: 1, endY: 2024, side: 'right', expandedHeight: 90,
     shortDesc: 'Mentored students in foundational computer science logic through custom game development in Python and Scratch.',
     bullets: [
-      'Coached 30+ students (ages 8–12) in Scratch, Python, and PixelPad.',
-      'Guided students in building games and solving coding challenges.'
+      'Coached <strong>30+ students (ages 8–12)</strong> in <strong>Scratch, Python, and PixelPad</strong>.',
+      'Guided students in building games and solving <strong>coding challenges</strong>.'
     ]
   },
   {
     id: 'techknowhow_asst', title: 'TechKnowHow Franchises', role: 'Assistant Lead Instructor', dateStr: 'May 2023 - Aug 2023',
     logo: '/images/experience/techknowhow.jpg',
-    startM: 5, startY: 2023, endM: 8, endY: 2023, side: 'left', overlapOffset: 1, expandedHeight: 90,
+    startM: 5, startY: 2023, endM: 8, endY: 2023, side: 'left', expandedHeight: 90,
     shortDesc: 'Guided young learners through engaging robotics and coding camps, fostering early technical interest.',
     bullets: [
-      'Assisted in mentoring students (ages 5–12) in introductory robotics and block-based coding.',
-      'Supported lead instructors in executing lesson plans and facilitating hands-on STEM activities.'
+      'Assisted in mentoring students (ages 5–12) in <strong>introductory robotics</strong> and <strong>block-based coding</strong>.',
+      'Supported lead instructors in executing lesson plans and facilitating <strong>hands-on STEM activities</strong>.'
     ]
   },
   {
@@ -57,9 +68,9 @@ export const experiences = [
     startM: 6, startY: 2022, endM: 8, endY: 2024, side: 'left', expandedHeight: 195,
     shortDesc: 'Engineered full-stack organizational tools, optimized cloud infrastructure, and redesigned mission-critical user interfaces.',
     bullets: [
-      'Engineered a cloud-based calendar system using React and JavaScript, enabling internal teams to track project timelines and coordinate contractor availability.',
-      'Optimized MySQL database queries and refactored AWS-hosted REST APIs, reducing page load latency and improving system throughput.',
-      'Deployed and managed containerized microservices via Docker and Kubernetes on AWS, establishing CI/CD workflows and cloud infrastructure best practices.'
+      'Engineered a <strong>cloud-based calendar system</strong> using <strong>React</strong> and <strong>JavaScript</strong>, enabling internal teams to track project timelines and coordinate contractor availability.',
+      'Optimized <strong>MySQL database queries</strong> and refactored <strong>AWS-hosted REST APIs</strong>, reducing page load latency and improving system throughput.',
+      'Deployed and managed containerized microservices via <strong>Docker</strong> and <strong>Kubernetes on AWS</strong>, establishing <strong>CI/CD workflows</strong> and cloud infrastructure best practices.'
     ]
   }
 ];

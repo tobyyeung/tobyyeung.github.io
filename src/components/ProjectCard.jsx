@@ -2,7 +2,7 @@ import React from 'react';
 
 const ProjectCard = ({ project, onClick }) => {
   return (
-    <button 
+    <button
       onClick={onClick}
       style={{
         width: '100%',
@@ -49,7 +49,7 @@ const ProjectCard = ({ project, onClick }) => {
           <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
         </svg>
       </div>
-      
+
       <div>
         <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: 'var(--text-primary)' }}>
           {project.title}
@@ -58,11 +58,11 @@ const ProjectCard = ({ project, onClick }) => {
           {project.shortDescription}
         </p>
       </div>
-      
+
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '1.5rem' }}>
-        {project.technologies && project.technologies.map((tech, idx) => (
-          <span 
-            key={idx} 
+        {project.technologies && project.technologies.slice(0, 3).map((tech, idx) => (
+          <span
+            key={idx}
             style={{
               background: 'rgba(99, 102, 241, 0.15)',
               color: 'var(--accent-primary)',
@@ -75,6 +75,20 @@ const ProjectCard = ({ project, onClick }) => {
             {tech}
           </span>
         ))}
+        {project.technologies && project.technologies.length > 3 && (
+          <span
+            style={{
+              background: 'rgba(255, 255, 255, 0.05)',
+              color: 'var(--text-secondary)',
+              padding: '0.25rem 0.75rem',
+              borderRadius: '9999px',
+              fontSize: '0.75rem',
+              fontWeight: '600'
+            }}
+          >
+            +{project.technologies.length - 3} more
+          </span>
+        )}
       </div>
     </button>
   );

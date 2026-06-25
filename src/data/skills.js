@@ -5,5 +5,6 @@ export const skillsData = {
   "Databases": ["ChromaDB", "DuckDB", "MySQL", "PostgreSQL", "SQLite", "Supabase"],
   "AI & Data": ["LangChain", "NumPy", "Ollama", "OpenCV", "Pandas", "RAG"],
   "Cloud & DevOps": ["AWS", "Docker", "Kubernetes", "Ubuntu", "Vercel"],
-  "Tools & Utilities": ["Bash", "Conda", "Git", "OAuth", "Pydantic", "Pytest", "VS Code"]
+  "Tools & Utilities": ["Bash", "Anaconda", "Git", "OAuth", "Pydantic", "Pytest", "VS Code"]
+
 };

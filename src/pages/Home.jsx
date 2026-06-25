@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import ProjectCard from '../components/ProjectCard';
+import ProjectModal from '../components/ProjectModal';
 import ExperienceCard from '../components/ExperienceCard';
 import EducationCard from '../components/EducationCard';
 import { getProjects } from '../data/projects';
@@ -11,6 +12,7 @@ import { getPositionForDate, getBasePositionForDate } from '../utils/timelineUti
 
 const Home = () => {
   const [projects, setProjects] = useState([]);
+  const [selectedProject, setSelectedProject] = useState(null);
   const [hoveredExpId, setHoveredExpId] = useState(null);
   const [activeSkillCategory, setActiveSkillCategory] = useState("Languages");
   const [hoveredExpStretch, setHoveredExpStretch] = useState(0);
@@ -222,7 +224,7 @@ const Home = () => {
           }}>
             {projects.length > 0 ? (
               projects.map((project, index) => (
-                <ProjectCard key={project.id} project={project} index={index} />
+                <ProjectCard key={project.id} project={project} onClick={() => setSelectedProject(project)} />
               ))
             ) : (
               <p style={{ color: 'var(--text-secondary)' }}>No projects available. Add some in the Admin Panel.</p>
@@ -422,6 +424,12 @@ const Home = () => {
           </div>
         </div>
       </section>
+      
+      {/* Project Modal Overlay */}
+      <ProjectModal 
+        project={selectedProject} 
+        onClose={() => setSelectedProject(null)} 
+      />
 
     </main>
   );

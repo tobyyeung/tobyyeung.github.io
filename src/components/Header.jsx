@@ -14,8 +14,9 @@ const Header = () => {
     setTimeout(() => {
       const element = document.getElementById(id);
       if (element) {
-        // Adjust for sticky header height (approx 80px)
-        const headerOffset = 80;
+        // Dynamically calculate the header's exact height
+        const header = document.querySelector('header');
+        const headerOffset = header ? header.offsetHeight : 0;
         const elementPosition = element.getBoundingClientRect().top;
         const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
@@ -37,9 +38,12 @@ const Header = () => {
       <div className="container" style={{ display: 'flex', flexDirection: 'column' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? '1rem' : '1.5rem' }}>
-            <Link to="/" style={{ fontSize: '1.35rem', fontWeight: 'bold', fontFamily: 'var(--font-display)', textDecoration: 'none', display: 'flex', alignItems: 'center', lineHeight: 1.2, padding: '0.1rem 0' }}>
+            <button 
+              onClick={() => scrollToSection('hero')} 
+              style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.35rem', fontWeight: 'bold', fontFamily: 'var(--font-display)', display: 'flex', alignItems: 'center', lineHeight: 1.2, padding: '0.1rem 0' }}
+            >
               <span className="gradient-text">Toby Yeung</span>
-            </Link>
+            </button>
             <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
               <a href="https://github.com/tobyyeung" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', color: 'rgba(255, 255, 255, 0.7)', transition: 'color 0.2s' }} onMouseOver={(e) => e.currentTarget.style.color = 'var(--accent-primary)'} onMouseOut={(e) => e.currentTarget.style.color = 'rgba(255, 255, 255, 0.7)'} aria-label="GitHub">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.02c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A4.8 4.8 0 0 0 8 18v4"></path></svg>

@@ -1,8 +1,9 @@
 import React from 'react';
 
-const ProjectCard = ({ project, onClick }) => {
+const ProjectCard = ({ project, onClick, animationIndex, isVisible }) => {
   return (
     <button
+      className={isVisible ? 'animate-project' : ''}
       onClick={onClick}
       style={{
         width: '100%',
@@ -18,7 +19,9 @@ const ProjectCard = ({ project, onClick }) => {
         transition: 'all 0.3s ease',
         minHeight: '220px',
         position: 'relative',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        opacity: isVisible ? undefined : 0,
+        animationDelay: isVisible ? `${animationIndex * 150}ms` : '0ms'
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.transform = 'translateY(-5px)';

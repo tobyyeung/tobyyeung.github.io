@@ -14,7 +14,9 @@ const ExperienceCard = ({
   dotOffset,
   accentColor,
   borderGlassColor,
-  cardRef
+  cardRef,
+  animationIndex,
+  isVisible
 }) => {
   // Format duration string
   const duration = Math.max(1, (exp.endY - exp.startY) * 12 + (exp.endM - exp.startM));
@@ -26,6 +28,7 @@ const ExperienceCard = ({
 
   return (
     <div
+      className={isVisible ? 'animate-experience' : ''}
       style={{
         position: isMobileTimeline ? 'relative' : 'absolute',
         top: isMobileTimeline ? 'auto' : `${topPx}px`,
@@ -35,7 +38,9 @@ const ExperienceCard = ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: renderAsLeft ? 'flex-end' : 'flex-start',
-        transition: isMobileTimeline ? 'none' : 'top 0.3s ease-in-out'
+        transition: isMobileTimeline ? 'none' : 'top 0.3s ease-in-out',
+        opacity: isVisible ? undefined : 0,
+        animationDelay: isVisible ? `${animationIndex * 200}ms` : '0ms'
       }}
       onMouseEnter={() => setHoveredExpId(exp.id)}
       onMouseLeave={() => setHoveredExpId(null)}

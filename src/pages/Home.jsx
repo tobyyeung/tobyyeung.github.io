@@ -9,6 +9,8 @@ import { uiucCourses, ucsdCourses } from '../data/education';
 import { skillsData } from '../data/skills';
 import { useBreakpoints } from '../hooks/useBreakpoints';
 import { getPositionForDate, getBasePositionForDate } from '../utils/timelineUtils';
+import { useInView } from '../hooks/useInView';
+import ScrollIndicator from '../components/ScrollIndicator';
 
 const Home = () => {
   const [projects, setProjects] = useState([]);
@@ -19,6 +21,13 @@ const Home = () => {
   const [staticStretches, setStaticStretches] = useState({});
   const cardRefs = useRef({});
   
+  const projectsRef = useRef(null);
+  const experiencesRef = useRef(null);
+  const educationRef = useRef(null);
+  const projectsInView = useInView(projectsRef, { threshold: 0.1, triggerOnce: true });
+  const experiencesInView = useInView(experiencesRef, { threshold: 0.1, triggerOnce: true });
+  const educationInView = useInView(educationRef, { threshold: 0.1, triggerOnce: true });
+
   // Typewriter effect state
   const fullDescription = "A CS & Econ student @ UIUC, specializing in building full-stack apps, containerized microservices, and AI systems.";
   const [typedText, setTypedText] = useState("");
@@ -33,15 +42,15 @@ const Home = () => {
 
   useEffect(() => {
     setProjects(getProjects());
-    
+
     // Typewriter effect logic
     let typeInterval;
-    
+
     const startTyping = () => {
       setIsTyping(true);
       setTypedText("");
       let currentIndex = 0;
-      
+
       typeInterval = setInterval(() => {
         if (currentIndex <= fullDescription.length) {
           setTypedText(fullDescription.slice(0, currentIndex));
@@ -50,7 +59,7 @@ const Home = () => {
           clearInterval(typeInterval);
           setIsTyping(false);
         }
-      }, 50); // Typing speed
+      }, 90); // Typing speed
     };
 
     startTyping();
@@ -114,25 +123,25 @@ const Home = () => {
     const checkStaticHeights = () => {
       if (isMobileTimeline) return;
       const newStretches = {};
-      
+
       const leftExps = experiences.filter(e => e.side === 'left').sort((a, b) => (b.endY * 12 + b.endM) - (a.endY * 12 + a.endM));
       const rightExps = experiences.filter(e => e.side === 'right').sort((a, b) => (b.endY * 12 + b.endM) - (a.endY * 12 + a.endM));
-      
+
       const calculateSide = (exps) => {
         for (let i = 0; i < exps.length - 1; i++) {
           const exp = exps[i];
           const nextExp = exps[i + 1];
           const el = cardRefs.current[exp.id];
           if (!el) continue;
-          
+
           const baseTop = getBasePositionForDate(exp.endY, exp.endM);
           const nextTop = getBasePositionForDate(nextExp.endY, nextExp.endM);
           const gap = nextTop - baseTop;
-          
+
           const currentHeight = el.offsetHeight;
           const buffer = 40;
           const requiredStretch = Math.max(0, currentHeight - gap + buffer);
-          
+
           if (requiredStretch > 0) {
             newStretches[exp.id] = requiredStretch;
           }
@@ -141,7 +150,7 @@ const Home = () => {
 
       calculateSide(leftExps);
       calculateSide(rightExps);
-      
+
       setStaticStretches(prev => {
         let changed = false;
         if (Object.keys(newStretches).length !== Object.keys(prev).length) changed = true;
@@ -157,7 +166,7 @@ const Home = () => {
     checkStaticHeights();
     const interval = setInterval(checkStaticHeights, 200);
     const timeout = setTimeout(() => clearInterval(interval), 2000);
-    
+
     window.addEventListener('resize', checkStaticHeights);
     return () => {
       clearInterval(interval);
@@ -184,22 +193,22 @@ const Home = () => {
     const calculateLevels = (side) => {
       const sideExps = experiences.filter(e => e.side === side).sort((a, b) => (b.endY * 12 + b.endM) - (a.endY * 12 + a.endM));
       const active = [];
-      
+
       for (const exp of sideExps) {
         const start = exp.startY * 12 + exp.startM;
         const end = exp.endY * 12 + exp.endM;
-        
+
         let level = 0;
         const usedLevels = new Set();
-        
+
         for (const act of active) {
           if (act.start < end && act.end > start) {
             usedLevels.add(act.level);
           }
         }
-        
+
         while (usedLevels.has(level)) level++;
-        
+
         levels[exp.id] = level;
         active.push({ id: exp.id, start, end, level });
       }
@@ -211,9 +220,11 @@ const Home = () => {
   }, []);
 
   return (
-    <main className="animate-fade-in" style={{ paddingBottom: '0' }}>
-      {/* Hero Section */}
-      <section style={{ padding: '6rem 0 4rem', minHeight: '80vh', display: 'flex', alignItems: 'center' }}>
+    <>
+      <ScrollIndicator />
+      <main className="animate-fade-in" style={{ paddingBottom: '0' }}>
+        {/* Hero Section */}
+        <section id="hero" style={{ padding: '6rem 0 4rem', minHeight: '80vh', display: 'flex', alignItems: 'center' }}>
         <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap-reverse', gap: '4rem' }}>
           {/* Text Content */}
           <div style={{ flex: '1 1 500px' }}>
@@ -237,16 +248,62 @@ const Home = () => {
           </div>
 
           {/* Image Content */}
-          <div style={{ flex: '1 1 300px', display: 'flex', justifyContent: 'center' }}>
-            <div style={{ position: 'relative', width: '100%', maxWidth: '350px', aspectRatio: '1/1', borderRadius: '50%', padding: '8px', background: 'var(--accent-gradient)' }}>
-              <img src="/images/self.jpg" alt="Toby Yeung" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%', border: '4px solid var(--bg-primary)' }} />
+          <div style={{ flex: '1 1 350px', display: 'flex', justifyContent: 'center' }}>
+            {/* Camera Body */}
+            <div style={{ 
+              position: 'relative', 
+              width: '100%', 
+              maxWidth: '450px', 
+              aspectRatio: '3/2', 
+              borderRadius: '32px', 
+              background: 'linear-gradient(145deg, rgba(20, 30, 50, 0.8), #040812)', 
+              border: '2px solid rgba(255, 255, 255, 0.1)', 
+              boxShadow: '0 20px 40px rgba(0,0,0,0.5), inset 0 2px 0 rgba(255,255,255,0.1)', 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center' 
+            }}>
+              
+              {/* Shutter Button */}
+              <div style={{ position: 'absolute', top: '-12px', right: '40px', width: '45px', height: '12px', borderRadius: '6px 6px 0 0', background: 'linear-gradient(to bottom, #444, #222)', border: '2px solid rgba(255, 255, 255, 0.1)', borderBottom: 'none' }} />
+              
+              {/* Camera Dial */}
+              <div style={{ position: 'absolute', top: '-8px', right: '100px', width: '35px', height: '8px', borderRadius: '4px 4px 0 0', background: '#333', border: '1px solid #111', borderBottom: 'none', backgroundImage: 'repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,0.5) 2px, rgba(0,0,0,0.5) 4px)' }} />
+
+              {/* Flash */}
+              <div style={{ position: 'absolute', top: '25px', left: '30px', width: '50px', height: '25px', borderRadius: '12px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255, 255, 255, 0.1)', boxShadow: 'inset 0 0 15px rgba(255, 255, 255, 0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ width: '80%', height: '40%', background: 'rgba(255, 255, 255, 0.8)', borderRadius: '2px', boxShadow: '0 0 10px rgba(255,255,255,0.5)' }} />
+              </div>
+
+              {/* Red Recording Dot */}
+              <div style={{ position: 'absolute', top: '30px', right: '35px', width: '12px', height: '12px', borderRadius: '50%', background: 'var(--danger)', boxShadow: '0 0 10px var(--danger)', animation: 'blink 2s infinite' }} />
+
+              {/* Camera Lens Outer Ring */}
+              <div style={{ position: 'relative', width: '65%', aspectRatio: '1/1', borderRadius: '50%', padding: '12px', background: 'linear-gradient(135deg, #333, #111)', border: '1px solid rgba(255,255,255,0.2)', boxShadow: '0 15px 35px rgba(0,0,0,0.6)' }}>
+                
+                {/* Accent Gradient Ring */}
+                <div style={{ width: '100%', height: '100%', borderRadius: '50%', padding: '4px', background: 'var(--accent-gradient)' }}>
+                  
+                  {/* Deep Inner Lens Barrel */}
+                  <div style={{ position: 'relative', width: '100%', height: '100%', borderRadius: '50%', border: '8px solid #050505', overflow: 'hidden', background: '#000', boxShadow: 'inset 0 0 30px rgba(0,0,0,0.9)' }}>
+                    
+                    {/* Lens Glare Reflection */}
+                    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'linear-gradient(135deg, rgba(255,255,255,0.3) 0%, transparent 40%, transparent 60%, rgba(255,255,255,0.05) 100%)', borderRadius: '50%', pointerEvents: 'none', zIndex: 10 }} />
+                    
+                    {/* The Photo */}
+                    <img className="camera-pan" src="/images/self.jpg" alt="Toby Yeung" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.9 }} />
+                  </div>
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
       </section>
 
       {/* Experience Section */}
-      <section id="experience" style={{ padding: '4rem 0', background: 'var(--bg-secondary)' }}>
+      <section id="experience" ref={experiencesRef} className="mesh-bg-base mesh-bg-1" style={{ padding: '4rem 0' }}>
+        <div className="section-bg-number right">01</div>
         <div className="container">
           <h2 className="section-title">Experience</h2>
 
@@ -308,6 +365,10 @@ const Home = () => {
               const xShiftAmount = overlapLevel * 2;
               const xShift = overlapLevel > 0 && !isMobileTimeline ? (renderAsLeft ? `-${xShiftAmount}rem` : `${xShiftAmount}rem`) : '0';
 
+              // Determine chronological index for animation delay
+              const sortedExps = [...experiences].sort((a, b) => (b.endY * 12 + b.endM) - (a.endY * 12 + a.endM));
+              const animationIndex = sortedExps.findIndex(e => e.id === exp.id);
+
               return (
                 <ExperienceCard
                   key={exp.id}
@@ -325,6 +386,8 @@ const Home = () => {
                   accentColor={accentColor}
                   borderGlassColor={borderGlassColor}
                   cardRef={el => { cardRefs.current[exp.id] = el; }}
+                  animationIndex={animationIndex}
+                  isVisible={experiencesInView}
                 />
               );
             })}
@@ -333,7 +396,8 @@ const Home = () => {
       </section>
 
       {/* Projects Section */}
-      <section id="projects" style={{ padding: '4rem 0' }}>
+      <section id="projects" ref={projectsRef} className="mesh-bg-base mesh-bg-2" style={{ padding: '4rem 0' }}>
+        <div className="section-bg-number left">02</div>
         <div className="container">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '3rem' }}>
             <div>
@@ -349,7 +413,13 @@ const Home = () => {
           }}>
             {projects.length > 0 ? (
               projects.map((project, index) => (
-                <ProjectCard key={project.id} project={project} onClick={() => setSelectedProject(project)} />
+                <ProjectCard 
+                  key={project.id} 
+                  project={project} 
+                  onClick={() => setSelectedProject(project)} 
+                  animationIndex={index}
+                  isVisible={projectsInView}
+                />
               ))
             ) : (
               <p style={{ color: 'var(--text-secondary)' }}>No projects available. Add some in the Admin Panel.</p>
@@ -359,7 +429,8 @@ const Home = () => {
       </section>
 
       {/* Education Section */}
-      <section id="education" style={{ padding: '4rem 0', background: 'var(--bg-secondary)' }}>
+      <section id="education" ref={educationRef} className="mesh-bg-base mesh-bg-3" style={{ padding: '4rem 0' }}>
+        <div className="section-bg-number right">03</div>
         <div className="container">
           <h2 className="section-title" style={{ marginBottom: '2rem', textAlign: 'left' }}>Education</h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
@@ -370,6 +441,8 @@ const Home = () => {
               gpa="GPA: 4.0/4.0 (Dean's List)"
               courses={uiucCourses}
               logoUrl="/images/education/uiuc.png"
+              animationIndex={0}
+              isVisible={educationInView}
             />
             <EducationCard
               institution="UC San Diego Extended Studies"
@@ -378,13 +451,16 @@ const Home = () => {
               courses={ucsdCourses}
               initialShowCount={ucsdCourses.length}
               logoUrl="/images/education/ucsd.png"
+              animationIndex={1}
+              isVisible={educationInView}
             />
           </div>
         </div>
       </section>
 
       {/* Skills Section */}
-      <section id="skills" style={{ padding: '6rem 0' }}>
+      <section id="skills" className="mesh-bg-base mesh-bg-4" style={{ padding: '6rem 0' }}>
+        <div className="section-bg-number left">04</div>
         <div className="container">
           <h2 className="section-title">Skills</h2>
 
@@ -549,18 +625,18 @@ const Home = () => {
           </div>
         </div>
       </section>
-      
+
       {/* Project Modal Overlay */}
-      <ProjectModal 
-        project={selectedProject} 
-        onClose={() => setSelectedProject(null)} 
+      <ProjectModal
+        project={selectedProject}
+        onClose={() => setSelectedProject(null)}
       />
 
       {/* Footer */}
-      <footer style={{ 
-        padding: '1rem', 
-        borderTop: '1px solid rgba(255, 255, 255, 0.05)', 
-        color: 'var(--text-tertiary)', 
+      <footer style={{
+        padding: '1rem',
+        borderTop: '1px solid rgba(255, 255, 255, 0.05)',
+        color: 'var(--text-tertiary)',
         background: 'var(--bg-primary)'
       }}>
         <div className="container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
@@ -576,7 +652,8 @@ const Home = () => {
           </div>
         </div>
       </footer>
-    </main>
+      </main>
+    </>
   );
 };
 

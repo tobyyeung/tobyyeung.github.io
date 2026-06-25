@@ -1,12 +1,24 @@
 import React, { useState } from 'react';
 
-const EducationCard = ({ institution, url, degree, gpa, courses, initialShowCount = 3, logoUrl }) => {
+const EducationCard = ({ institution, url, degree, gpa, courses, initialShowCount = 3, logoUrl, animationIndex, isVisible }) => {
   const [showAllCourses, setShowAllCourses] = useState(false);
   const displayedCourses = showAllCourses ? courses : courses.slice(0, initialShowCount);
   const hasMoreCourses = courses.length > initialShowCount;
 
   return (
-    <div className="glass-panel" style={{ display: 'flex', flexWrap: 'wrap-reverse', justifyContent: 'space-between', alignItems: 'center', padding: '2rem', gap: '2rem' }}>
+    <div 
+      className={`glass-panel ${isVisible ? 'animate-education' : ''}`} 
+      style={{ 
+        display: 'flex', 
+        flexWrap: 'wrap-reverse', 
+        justifyContent: 'space-between', 
+        alignItems: 'center', 
+        padding: '2rem', 
+        gap: '2rem',
+        opacity: isVisible ? undefined : 0,
+        animationDelay: isVisible ? `${animationIndex * 150}ms` : '0ms'
+      }}
+    >
       <div style={{ flex: '1 1 300px' }}>
         <h3 style={{ fontSize: '1.25rem', marginBottom: '0.25rem' }}>
           <a href={url} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>
@@ -23,10 +35,27 @@ const EducationCard = ({ institution, url, degree, gpa, courses, initialShowCoun
         <div style={{ color: 'var(--text-tertiary)', fontSize: '0.9rem', marginTop: '0.5rem' }}>
           <strong style={{ color: 'var(--text-primary)' }}>Courses:</strong>
           <ul style={{ paddingLeft: '1.5rem', marginTop: '0.5rem', display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
-            {displayedCourses.map(course => (
+            {courses.slice(0, initialShowCount).map(course => (
               <li key={course}>{course}</li>
             ))}
           </ul>
+          
+          {hasMoreCourses && (
+            <div style={{
+              display: 'grid',
+              gridTemplateRows: showAllCourses ? '1fr' : '0fr',
+              transition: 'grid-template-rows 0.4s ease-out'
+            }}>
+              <div style={{ overflow: 'hidden' }}>
+                <ul style={{ paddingLeft: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.3rem', paddingTop: '0.3rem' }}>
+                  {courses.slice(initialShowCount).map(course => (
+                    <li key={course}>{course}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          )}
+
           {hasMoreCourses && (
             <button
               onClick={() => setShowAllCourses(!showAllCourses)}

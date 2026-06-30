@@ -6,20 +6,27 @@ const EducationCard = ({ institution, url, degree, gpa, courses, initialShowCoun
   const hasMoreCourses = courses.length > initialShowCount;
 
   return (
-    <div 
-      className={`glass-panel ${isVisible ? 'animate-education' : ''}`} 
-      style={{ 
-        display: 'flex', 
-        flexWrap: 'wrap-reverse', 
-        justifyContent: 'space-between', 
-        alignItems: 'center', 
-        padding: '2rem', 
-        gap: '2rem',
+    <div
+      className={isVisible ? 'animate-education' : ''}
+      style={{
         opacity: isVisible ? undefined : 0,
-        animationDelay: isVisible ? `${animationIndex * 200}ms` : '0ms'
+        animationDelay: isVisible ? `${animationIndex * 200}ms` : '0ms',
+        width: '100%'
       }}
     >
-      <div style={{ flex: '1 1 300px' }}>
+      <div 
+        className="glass-panel" 
+        style={{ 
+          display: 'flex', 
+          flexWrap: 'wrap-reverse', 
+          justifyContent: 'space-between', 
+          alignItems: 'center', 
+          padding: '2rem', 
+          gap: '2rem',
+          width: '100%'
+        }}
+      >
+        <div style={{ flex: '1 1 300px' }}>
         <h3 style={{ fontSize: '1.25rem', marginBottom: '0.25rem' }}>
           <a href={url} target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>
             {institution}
@@ -69,6 +76,7 @@ const EducationCard = ({ institution, url, degree, gpa, courses, initialShowCoun
       <div style={{ background: '#ffffff', padding: '1rem', borderRadius: '8px', width: '220px', minHeight: '80px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
         <img src={logoUrl} alt={`${institution} Logo`} style={{ maxWidth: '100%', maxHeight: '100px', objectFit: 'contain' }} />
       </div>
+    </div>
     </div>
   );
 };

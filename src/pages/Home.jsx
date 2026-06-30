@@ -221,7 +221,16 @@ const Home = () => {
       <ScrollIndicator />
       <main className="animate-fade-in" style={{ paddingBottom: '0' }}>
         {/* Hero Section */}
-        <section id="hero" style={{ padding: '6rem 0 4rem', minHeight: '80vh', display: 'flex', alignItems: 'center' }}>
+        <section id="hero" style={{ 
+          padding: '6rem 0 4rem', 
+          minHeight: '80vh', 
+          display: 'flex', 
+          alignItems: 'center',
+          backgroundImage: `linear-gradient(to bottom, rgba(10, 19, 37, 0.6) 0%, rgba(10, 19, 37, 0.95) 85%, #0A1325 100%), url(${import.meta.env.BASE_URL}images/landingpage.jpg)`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}>
         <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap-reverse', gap: '4rem' }}>
           {/* Text Content */}
           <div style={{ flex: '1 1 500px' }}>

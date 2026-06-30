@@ -7,7 +7,7 @@ export const initialProjects = [
     technologies: ["Next.js", "React", "Supabase", "PostgreSQL", "Tailwind CSS", "Vercel", "Serverless", "Edge Functions"],
     websiteUrl: "",
     githubUrl: "https://github.com/tobyyeung/aleago",
-    imageUrl: "/images/projects/aleago.png"
+    imageUrl: import.meta.env.BASE_URL + "images/projects/aleago.png"
   },
   {
     id: "2",
@@ -17,7 +17,7 @@ export const initialProjects = [
     technologies: ["React", "Node.js", "Express", "REST APIs", "Google Workspace API", "OAuth 2.0", "WebSockets"],
     websiteUrl: "",
     githubUrl: "https://github.com/tobyyeung/tachotasks",
-    imageUrl: "/images/projects/tacho.png"
+    imageUrl: import.meta.env.BASE_URL + "images/projects/tacho.png"
   },
   {
     id: "3",
@@ -27,7 +27,7 @@ export const initialProjects = [
     technologies: ["Python", "OpenCV", "TensorFlow", "Keras", "Machine Learning", "Neural Networks", "Pandas", "NumPy"],
     websiteUrl: "",
     githubUrl: "",
-    imageUrl: "/images/projects/vision.png"
+    imageUrl: import.meta.env.BASE_URL + "images/projects/vision.png"
   },
   {
     id: "4",
@@ -37,7 +37,7 @@ export const initialProjects = [
     technologies: ["FastAPI", "Python", "DuckDB", "ChromaDB", "Ollama", "LLMs", "RAG", "LangChain", "Pytest"],
     websiteUrl: "https://invite.illinois.edu/",
     githubUrl: "",
-    imageUrl: "/images/projects/keating.png"
+    imageUrl: import.meta.env.BASE_URL + "images/projects/keating.png"
   },
   {
     id: "5",
@@ -47,7 +47,7 @@ export const initialProjects = [
     technologies: ["React", "Node.js", "MySQL", "Docker", "Kubernetes", "AWS EC2", "AWS S3", "Nginx", "CI/CD"],
     websiteUrl: "https://kledger.com/",
     githubUrl: "",
-    imageUrl: "/images/projects/kesselworks.png"
+    imageUrl: import.meta.env.BASE_URL + "images/projects/kesselworks.png"
   }
 ];
 

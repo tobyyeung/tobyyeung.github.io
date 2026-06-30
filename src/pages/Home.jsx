@@ -288,7 +288,7 @@ const Home = () => {
                     <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'linear-gradient(135deg, rgba(255,255,255,0.3) 0%, transparent 40%, transparent 60%, rgba(255,255,255,0.05) 100%)', borderRadius: '50%', pointerEvents: 'none', zIndex: 10 }} />
                     
                     {/* The Photo */}
-                    <img className="camera-pan" src="/images/self.jpg" alt="Toby Yeung" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.9 }} />
+                    <img className="camera-pan" src={import.meta.env.BASE_URL + "images/self.jpg"} alt="Toby Yeung" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.9 }} />
                   </div>
                 </div>
               </div>
@@ -437,7 +437,7 @@ const Home = () => {
               degree="B.S. in Computer Science and Economics (Expected May 2028)"
               gpa="GPA: 4.0/4.0 (Dean's List)"
               courses={uiucCourses}
-              logoUrl="/images/education/uiuc.png"
+              logoUrl={import.meta.env.BASE_URL + "images/education/uiuc.png"}
               animationIndex={0}
               isVisible={educationInView}
             />
@@ -447,7 +447,7 @@ const Home = () => {
               gpa="GPA: 4.0/4.0"
               courses={ucsdCourses}
               initialShowCount={ucsdCourses.length}
-              logoUrl="/images/education/ucsd.png"
+              logoUrl={import.meta.env.BASE_URL + "images/education/ucsd.png"}
               animationIndex={1}
               isVisible={educationInView}
             />
@@ -532,7 +532,7 @@ const Home = () => {
                   color: 'var(--text-primary)'
                 }}>
                   <img
-                    src={`/images/skills/${skill.replace(/[\/\\]/g, '_').toLowerCase()}.png`}
+                    src={`${import.meta.env.BASE_URL}images/skills/${skill.replace(/[\\/\\\\]/g, '_').toLowerCase()}.png`}
                     alt={skill}
                     style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                     onError={(e) => {

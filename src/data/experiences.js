@@ -1,7 +1,7 @@
 export const experiences = [
   {
     id: 'invite', title: 'INVITE AI Institute', role: 'AI Researcher', dateStr: 'Jun 2026 - Present',
-    logo: '/images/experience/invite.jpg',
+    logo: import.meta.env.BASE_URL + 'images/experience/invite.jpg',
     startM: 6, startY: 2026, endM: 8, endY: 2026, side: 'left', expandedHeight: 180,
     shortDesc: 'Architecting intelligent RAG systems and full-stack applications to empower educators with data-driven insights.',
     bullets: [
@@ -12,7 +12,7 @@ export const experiences = [
   },
   {
     id: 'uiuc_tech_services', title: 'Technology Services, UIUC', role: 'Site Consultant', dateStr: 'Apr 2026 - Present',
-    logo: '/images/experience/uiuc.jpg',
+    logo: import.meta.env.BASE_URL + 'images/experience/uiuc.jpg',
     startM: 4, startY: 2026, endM: 8, endY: 2026, side: 'right', expandedHeight: 160,
     shortDesc: 'Provided frontline technical support and ensured seamless operation of computing labs for students and faculty.',
     bullets: [
@@ -23,7 +23,7 @@ export const experiences = [
   },
   {
     id: 'mathnasium', title: 'Mathnasium', role: 'Mathematics Instructor', dateStr: 'Jan 2024 - Aug 2025',
-    logo: '/images/experience/mathnasium.jpg',
+    logo: import.meta.env.BASE_URL + 'images/experience/mathnasium.jpg',
     startM: 1, startY: 2024, endM: 8, endY: 2025, side: 'right', expandedHeight: 150,
     shortDesc: 'Provided tailored mathematical instruction and competition coaching for K-12 students of all learning abilities.',
     bullets: [
@@ -34,7 +34,7 @@ export const experiences = [
   },
   {
     id: 'techknowhow_lead', title: 'TechKnowHow Franchises', role: 'Lead Instructor', dateStr: 'May 2024 - Aug 2024',
-    logo: '/images/experience/techknowhow.jpg',
+    logo: import.meta.env.BASE_URL + 'images/experience/techknowhow.jpg',
     startM: 5, startY: 2024, endM: 8, endY: 2024, side: 'right', expandedHeight: 90,
     shortDesc: 'Led robotics and coding classes of 20+ students, ensuring individualized instruction in Python and Roblox.',
     bullets: [
@@ -44,7 +44,7 @@ export const experiences = [
   },
   {
     id: 'thecoderschool', title: 'theCoderSchool', role: 'Code Coach', dateStr: 'Aug 2023 - Jan 2024',
-    logo: '/images/experience/thecoderschool.jpg',
+    logo: import.meta.env.BASE_URL + 'images/experience/thecoderschool.jpg',
     startM: 8, startY: 2023, endM: 1, endY: 2024, side: 'right', expandedHeight: 90,
     shortDesc: 'Mentored students in foundational computer science logic through custom game development in Python and Scratch.',
     bullets: [
@@ -54,7 +54,7 @@ export const experiences = [
   },
   {
     id: 'techknowhow_asst', title: 'TechKnowHow Franchises', role: 'Assistant Lead Instructor', dateStr: 'May 2023 - Aug 2023',
-    logo: '/images/experience/techknowhow.jpg',
+    logo: import.meta.env.BASE_URL + 'images/experience/techknowhow.jpg',
     startM: 5, startY: 2023, endM: 8, endY: 2023, side: 'left', expandedHeight: 90,
     shortDesc: 'Guided young learners through engaging robotics and coding camps, fostering early technical interest.',
     bullets: [
@@ -64,7 +64,7 @@ export const experiences = [
   },
   {
     id: 'kesselworks', title: 'KesselWorks, LLC', role: 'Software Developer & UI/UX Intern', dateStr: 'Jun 2022 - Aug 2024',
-    logo: '/images/experience/kesselworks.jpg',
+    logo: import.meta.env.BASE_URL + 'images/experience/kesselworks.jpg',
     startM: 6, startY: 2022, endM: 8, endY: 2024, side: 'left', expandedHeight: 195,
     shortDesc: 'Engineered full-stack organizational tools, optimized cloud infrastructure, and redesigned mission-critical user interfaces.',
     bullets: [

@@ -5,7 +5,7 @@ export const initialProjects = [
     shortDescription: "A dynamic web application powering a unique virtual economy using deterministic probability models.",
     description: "Aleago is a high-performance web application built with <strong>Next.js</strong>, <strong>React</strong>, and <strong>Supabase</strong> that powers a unique virtual economy and robust digital marketplace. I designed the architecture to execute complex deterministic probability models and transactional logic using highly scalable <strong>serverless edge functions</strong>. The backend is structured with asynchronous, highly-concurrent <strong>PostgreSQL</strong> pipelines, meticulously crafted to seamlessly handle millions of mathematical value-matching algorithms and concurrent requests in real-time.",
     technologies: ["Next.js", "React", "Supabase", "PostgreSQL", "Tailwind CSS", "Vercel", "Serverless", "Edge Functions"],
-    websiteUrl: "",
+    websiteUrl: "https://aleago.vercel.app/",
     githubUrl: "https://github.com/tobyyeung/aleago",
     imageUrl: import.meta.env.BASE_URL + "images/projects/aleago.png"
   },

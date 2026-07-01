@@ -39,6 +39,39 @@
   /* Transitions */
   --transition-fast: 0.15s ease-out;
   --transition-normal: 0.3s ease-out;
+
+  /* Mesh Background Colors */
+  --mesh-bg-hero: #030610;
+  --mesh-bg-1: #060b15;
+  --mesh-bg-2: #040810;
+  --mesh-bg-3: #050912;
+  --mesh-bg-4: #03060c;
+}
+
+[data-theme='light'] {
+  --bg-primary: #f8fafc;
+  --bg-secondary: #f1f5f9;
+  --bg-glass: rgba(248, 250, 252, 0.85);
+  --border-glass: rgba(58, 197, 163, 0.4);
+
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-tertiary: #64748b;
+
+  --accent-primary: #6366f1;
+  --accent-secondary: #4f46e5;
+  --accent-gradient: linear-gradient(135deg, var(--accent-primary), var(--accent-primary));
+  --accent-gradient-hover: linear-gradient(135deg, var(--accent-secondary), var(--accent-secondary));
+
+  --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+  --shadow-glow: 0 0 20px rgba(99, 102, 241, 0.2);
+
+  --mesh-bg-hero: #e0f2fe;
+  --mesh-bg-1: #f0fdfa;
+  --mesh-bg-2: #f8fafc;
+  --mesh-bg-3: #f5f3ff;
+  --mesh-bg-4: #f0fdf4;
 }
 
 * {
@@ -97,7 +130,7 @@ button {
 /* Navigation Buttons Animation */
 .nav-btn {
   font-family: var(--font-display);
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--text-secondary);
   font-size: 1.1rem;
   font-weight: 500;
   background: none;
@@ -178,93 +211,110 @@ button {
 }
 
 @keyframes flowTexture {
-  0% { background-position: 0 0; }
-  25% { background-position: -100px 50px; }
-  50% { background-position: -200px -50px; }
-  75% { background-position: -300px 100px; }
-  100% { background-position: -400px 400px; }
+  0% {
+    background-position: 0 0;
+  }
+
+  25% {
+    background-position: -100px 50px;
+  }
+
+  50% {
+    background-position: -200px -50px;
+  }
+
+  75% {
+    background-position: -300px 100px;
+  }
+
+  100% {
+    background-position: -400px 400px;
+  }
 }
 
 .hero-mesh-bg {
-  background-color: #030610;
-  background-image: 
+  background-color: var(--mesh-bg-hero);
+  background-image:
     radial-gradient(circle at center, rgba(255, 255, 255, 0.08) 0%, transparent 65%),
     radial-gradient(circle at center, rgba(65, 105, 225, 0.12) 0%, transparent 65%),
-    linear-gradient(90deg, 
-      rgba(138, 43, 226, 0.25) 0%, 
-      rgba(255, 20, 147, 0.2) 20%, 
-      rgba(65, 105, 225, 0.25) 40%, 
-      rgba(0, 191, 255, 0.2) 60%, 
-      rgba(58, 197, 163, 0.25) 80%, 
-      rgba(138, 43, 226, 0.25) 100%
-    );
-  background-size: 
-    3vw 3vh, 
-    3vw 3vh, 
+    linear-gradient(90deg,
+      rgba(138, 43, 226, 0.25) 0%,
+      rgba(255, 20, 147, 0.2) 20%,
+      rgba(65, 105, 225, 0.25) 40%,
+      rgba(0, 191, 255, 0.2) 60%,
+      rgba(58, 197, 163, 0.25) 80%,
+      rgba(138, 43, 226, 0.25) 100%);
+  background-size:
+    3vw 3vh,
+    3vw 3vh,
     200vw 100%;
 }
 
 @keyframes flowRiver {
   0% {
-    background-position: 
-      0vw 0vh, 
-      1.5vw 1.5vh, 
+    background-position:
+      0vw 0vh,
+      1.5vw 1.5vh,
       0 0;
   }
+
   25% {
-    background-position: 
-      -7.5vw 3vh, 
-      -6vw 4.5vh, 
+    background-position:
+      -7.5vw 3vh,
+      -6vw 4.5vh,
       -50vw 8vh;
   }
+
   50% {
-    background-position: 
-      -15vw -3vh, 
-      -13.5vw -1.5vh, 
+    background-position:
+      -15vw -3vh,
+      -13.5vw -1.5vh,
       -100vw -5vh;
   }
+
   75% {
-    background-position: 
-      -22.5vw 3vh, 
-      -21vw 4.5vh, 
+    background-position:
+      -22.5vw 3vh,
+      -21vw 4.5vh,
       -150vw 5vh;
   }
+
   100% {
-    background-position: 
-      -30vw 0vh, 
-      -28.5vw 1.5vh, 
+    background-position:
+      -30vw 0vh,
+      -28.5vw 1.5vh,
       -200vw 0;
   }
 }
 
 .mesh-bg-1 {
-  background-color: #060b15;
+  background-color: var(--mesh-bg-1);
   background-image:
-    radial-gradient(circle at 85% 50%, #010204 0%, transparent 45%),
+    radial-gradient(circle at 85% 50%, rgba(1, 2, 4, 0.1) 0%, transparent 45%),
     radial-gradient(circle at 10% 10%, rgba(65, 105, 225, 0.25) 0%, transparent 50%),
     radial-gradient(circle at 50% 90%, rgba(58, 197, 163, 0.15) 0%, transparent 60%);
 }
 
 .mesh-bg-2 {
-  background-color: #040810;
+  background-color: var(--mesh-bg-2);
   background-image:
-    radial-gradient(circle at 15% 50%, #010204 0%, transparent 45%),
+    radial-gradient(circle at 15% 50%, rgba(1, 2, 4, 0.1) 0%, transparent 45%),
     radial-gradient(circle at 80% 20%, rgba(138, 43, 226, 0.25) 0%, transparent 50%),
     radial-gradient(circle at 20% 80%, rgba(0, 191, 255, 0.15) 0%, transparent 60%);
 }
 
 .mesh-bg-3 {
-  background-color: #050912;
+  background-color: var(--mesh-bg-3);
   background-image:
-    radial-gradient(circle at 85% 50%, #010204 0%, transparent 45%),
+    radial-gradient(circle at 85% 50%, rgba(1, 2, 4, 0.1) 0%, transparent 45%),
     radial-gradient(circle at 30% 20%, rgba(0, 250, 154, 0.15) 0%, transparent 50%),
     radial-gradient(circle at 70% 80%, rgba(147, 112, 219, 0.25) 0%, transparent 60%);
 }
 
 .mesh-bg-4 {
-  background-color: #03060c;
+  background-color: var(--mesh-bg-4);
   background-image:
-    radial-gradient(circle at 15% 50%, #010204 0%, transparent 45%),
+    radial-gradient(circle at 15% 50%, rgba(1, 2, 4, 0.1) 0%, transparent 45%),
     radial-gradient(circle at 90% 90%, rgba(30, 144, 255, 0.25) 0%, transparent 50%),
     radial-gradient(circle at 40% 10%, rgba(255, 20, 147, 0.15) 0%, transparent 60%);
 }
@@ -372,10 +422,21 @@ button {
 }
 
 @keyframes cameraPan {
-  0% { transform: scale(1) translate(0, 0); }
-  33% { transform: scale(1.1) translate(-3%, -2%); }
-  66% { transform: scale(1.15) translate(2%, 2%); }
-  100% { transform: scale(1) translate(0, 0); }
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+
+  33% {
+    transform: scale(1.1) translate(-3%, -2%);
+  }
+
+  66% {
+    transform: scale(1.15) translate(2%, 2%);
+  }
+
+  100% {
+    transform: scale(1) translate(0, 0);
+  }
 }
 
 @keyframes fadeIn {
@@ -395,6 +456,7 @@ button {
     opacity: 0;
     transform: translateY(-50px) scale(0.95);
   }
+
   100% {
     opacity: 1;
     transform: translateY(0) scale(1);
@@ -406,6 +468,7 @@ button {
     opacity: 0;
     transform: translateY(-30px);
   }
+
   100% {
     opacity: 1;
     transform: translateY(0);
@@ -417,6 +480,7 @@ button {
     opacity: 0;
     transform: translateX(50px) scale(0.95);
   }
+
   100% {
     opacity: 1;
     transform: translateX(0) scale(1);
@@ -439,9 +503,12 @@ button {
 }
 
 @keyframes bounceSubtle {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0);
   }
+
   50% {
     transform: translateY(-6px);
   }
@@ -490,4 +557,12 @@ button {
 .form-textarea {
   resize: vertical;
   min-height: 120px;
+}
+
+.hero-landing-bg {
+  background-image: linear-gradient(to bottom, rgba(10, 19, 37, 0.6) 0%, rgba(10, 19, 37, 0.95) 85%, #0A1325 100%), var(--hero-bg-img);
+}
+
+[data-theme='light'] .hero-landing-bg {
+  background-image: linear-gradient(to bottom, rgba(248, 250, 252, 0.1) 0%, rgba(248, 250, 252, 0.55) 85%, #f8fafc 100%), var(--hero-bg-img-light);
 }

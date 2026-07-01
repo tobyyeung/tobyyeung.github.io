@@ -221,12 +221,14 @@ const Home = () => {
       <ScrollIndicator />
       <main className="animate-fade-in" style={{ paddingBottom: '0' }}>
         {/* Hero Section */}
-        <section id="hero" style={{ 
-          padding: '6rem 0 4rem', 
-          minHeight: '80vh', 
+        <section id="hero" className="hero-landing-bg" style={{ 
+          minHeight: '100vh', 
           display: 'flex', 
-          alignItems: 'center',
-          backgroundImage: `linear-gradient(to bottom, rgba(10, 19, 37, 0.6) 0%, rgba(10, 19, 37, 0.95) 85%, #0A1325 100%), url(${import.meta.env.BASE_URL}images/landingpage.jpg)`,
+          alignItems: 'center', 
+          padding: '8rem 0',
+          position: 'relative',
+          '--hero-bg-img': `url(${import.meta.env.BASE_URL}images/landingpage.jpg)`,
+          '--hero-bg-img-light': `url(${import.meta.env.BASE_URL}images/landingpage-light.png)`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat'
@@ -236,9 +238,9 @@ const Home = () => {
           <div style={{ flex: '1 1 500px' }}>
             <h1 style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem', marginBottom: '1.5rem', lineHeight: '1.1' }}>
               <span style={{ fontSize: '2.5rem', color: 'var(--text-primary)', fontWeight: '500' }}>Hi, I'm</span>
-              <span className="gradient-text" style={{ fontSize: '5.5rem', display: 'block' }}>Toby Yeung</span>
+              <span className="gradient-text" style={{ fontSize: '5.5rem', display: 'block', filter: 'drop-shadow(1px 1px 0px #ffffff) drop-shadow(-1px -1px 0px #ffffff) drop-shadow(1px -1px 0px #ffffff) drop-shadow(-1px 1px 0px #ffffff)' }}>Toby Yeung</span>
             </h1>
-            <p style={{ fontSize: '1.25rem', color: '#ffffff', maxWidth: '800px', marginBottom: '2.5rem', lineHeight: '1.6', minHeight: windowWidth < 600 ? '90px' : '60px' }}>
+            <p style={{ fontSize: '1.25rem', color: 'var(--text-primary)', maxWidth: '800px', marginBottom: '2.5rem', lineHeight: '1.6', minHeight: windowWidth < 600 ? '90px' : '60px' }}>
               {typedText}
               <span className="cursor-blink" style={{ opacity: isTyping ? 1 : 0.7 }}>|</span>
             </p>
@@ -492,7 +494,7 @@ const Home = () => {
               >
                 {category}
                 <span style={{
-                  background: activeSkillCategory === category ? 'rgba(0,0,0,0.15)' : 'rgba(255,255,255,0.05)',
+                  background: activeSkillCategory === category ? 'var(--border-glass)' : 'var(--bg-secondary)',
                   padding: '0.15rem 0.6rem',
                   borderRadius: '9999px',
                   fontSize: '0.8rem',
@@ -516,7 +518,7 @@ const Home = () => {
               <div key={skill} className="glass-panel" style={{
                 width: '100%',
                 aspectRatio: '1/1',
-                background: 'rgba(255, 255, 255, 0.06)',
+                background: 'var(--bg-secondary)',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
@@ -590,7 +592,7 @@ const Home = () => {
                     borderRadius: 'var(--radius-md)',
                     border: '1px solid var(--border-glass)',
                     background: 'rgba(0,0,0,0.2)',
-                    color: 'white',
+                    color: 'var(--text-primary)',
                     fontFamily: 'inherit',
                     fontSize: '1rem'
                   }} />
@@ -603,7 +605,7 @@ const Home = () => {
                     borderRadius: 'var(--radius-md)',
                     border: '1px solid var(--border-glass)',
                     background: 'rgba(0,0,0,0.2)',
-                    color: 'white',
+                    color: 'var(--text-primary)',
                     fontFamily: 'inherit',
                     fontSize: '1rem'
                   }} />
@@ -617,7 +619,7 @@ const Home = () => {
                   borderRadius: 'var(--radius-md)',
                   border: '1px solid var(--border-glass)',
                   background: 'rgba(0,0,0,0.2)',
-                  color: 'white',
+                  color: 'var(--text-primary)',
                   fontFamily: 'inherit',
                   fontSize: '1rem',
                   resize: 'vertical'
@@ -641,7 +643,7 @@ const Home = () => {
       {/* Footer */}
       <footer style={{
         padding: '1rem',
-        borderTop: '1px solid rgba(255, 255, 255, 0.05)',
+        borderTop: '1px solid var(--border-glass)',
         color: 'var(--text-tertiary)',
         background: 'var(--bg-primary)'
       }}>

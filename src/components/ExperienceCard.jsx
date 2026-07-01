@@ -97,7 +97,7 @@ const ExperienceCard = ({
                   <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', width: '100%', gap: '0.5rem' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
                       <h3 style={{ fontSize: 'clamp(0.7rem, 1.2vw, 1.05rem)', fontWeight: 'bold', color: 'var(--text-primary)', margin: '0.1rem 0 0', wordBreak: 'break-word' }}>{exp.title}</h3>
-                      <h4 style={{ fontSize: 'clamp(0.65rem, 1vw, 0.9rem)', fontWeight: '600', color: 'rgba(255, 255, 255, 0.75)', margin: 0, wordBreak: 'break-word' }}>{exp.role}</h4>
+                      <h4 style={{ fontSize: 'clamp(0.65rem, 1vw, 0.9rem)', fontWeight: '600', color: 'var(--text-secondary)', margin: 0, wordBreak: 'break-word' }}>{exp.role}</h4>
                     </div>
                     <span style={{ fontSize: '0.6rem', fontWeight: 'bold', color: accentColor, textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'right', whiteSpace: 'nowrap', marginTop: '0.2rem', flexShrink: 0 }}>
                       {exp.dateStr}
@@ -109,7 +109,7 @@ const ExperienceCard = ({
                       {exp.dateStr}{windowWidth >= 850 && ` • ${durStr.trim()}`}
                     </span>
                     <h3 style={{ fontSize: 'clamp(0.7rem, 1.2vw, 1.05rem)', fontWeight: 'bold', color: 'var(--text-primary)', margin: '0.1rem 0 0', wordBreak: 'break-word' }}>{exp.title}</h3>
-                    <h4 style={{ fontSize: 'clamp(0.65rem, 1vw, 0.9rem)', fontWeight: '600', color: 'rgba(255, 255, 255, 0.75)', margin: 0, wordBreak: 'break-word' }}>{exp.role}</h4>
+                    <h4 style={{ fontSize: 'clamp(0.65rem, 1vw, 0.9rem)', fontWeight: '600', color: 'var(--text-secondary)', margin: 0, wordBreak: 'break-word' }}>{exp.role}</h4>
                   </>
                 )}
               </div>
@@ -123,7 +123,7 @@ const ExperienceCard = ({
               transition: 'max-height 0.3s ease-in-out, opacity 0.3s ease-in-out, margin-top 0.3s ease-in-out',
               marginTop: windowWidth >= 650 || hoveredExpId === exp.id ? '0.2rem' : '0'
             }}>
-              <p style={{ fontSize: 'clamp(0.65rem, 0.9vw, 0.82rem)', color: 'rgba(255, 255, 255, 0.85)', marginBottom: '0', lineHeight: '1.35' }}>
+              <p style={{ fontSize: 'clamp(0.65rem, 0.9vw, 0.82rem)', color: 'var(--text-primary)', marginBottom: '0', lineHeight: '1.35' }}>
                 {exp.shortDesc}
               </p>
             </div>

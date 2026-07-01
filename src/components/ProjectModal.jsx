@@ -80,7 +80,7 @@ const ProjectModal = ({ project, onClose }) => {
         </button>
 
         {/* Top Header Section (Title, Buttons, and Tags span across both sides) */}
-        <div style={{ padding: '2.5rem 2.5rem 1rem 2.5rem', display: 'flex', flexDirection: 'column', gap: '1.5rem', borderBottom: '1px solid rgba(255, 255, 255, 0.05)' }}>
+        <div style={{ padding: '2.5rem 2.5rem 1rem 2.5rem', display: 'flex', flexDirection: 'column', gap: '1.5rem', borderBottom: '1px solid var(--border-glass)' }}>
           {/* Title and Buttons Row */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem', paddingRight: '2rem' }}>
             <h2 style={{ fontSize: '2.5rem', color: 'var(--text-primary)', lineHeight: 1.1, margin: 0 }}>
@@ -131,7 +131,7 @@ const ProjectModal = ({ project, onClose }) => {
             <div 
               className="modal-description"
               style={{ 
-                color: 'rgba(255, 255, 255, 0.85)', 
+                color: 'var(--text-primary)', 
                 fontSize: '1.1rem', 
                 lineHeight: '1.8',
                 marginBottom: '2.5rem'
@@ -162,7 +162,7 @@ const ProjectModal = ({ project, onClose }) => {
           to { transform: translateY(0); opacity: 1; }
         }
         .modal-description strong {
-          color: #ffffff;
+          color: var(--text-primary);
           font-weight: 700;
         }
       `}</style>

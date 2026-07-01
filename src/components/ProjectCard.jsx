@@ -26,7 +26,7 @@ const ProjectCard = ({ project, onClick, animationIndex, isVisible }) => {
       onMouseEnter={(e) => {
         e.currentTarget.style.transform = 'translateY(-5px)';
         e.currentTarget.style.boxShadow = 'var(--shadow-lg), 0 0 25px rgba(99, 102, 241, 0.15)';
-        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+        e.currentTarget.style.background = 'var(--bg-secondary)';
         const icon = e.currentTarget.querySelector('.project-card-icon');
         if (icon) {
           icon.style.color = 'var(--accent-primary)';
@@ -81,7 +81,7 @@ const ProjectCard = ({ project, onClick, animationIndex, isVisible }) => {
         {project.technologies && project.technologies.length > 3 && (
           <span
             style={{
-              background: 'rgba(255, 255, 255, 0.05)',
+              background: 'var(--bg-secondary)',
               color: 'var(--text-secondary)',
               padding: '0.25rem 0.75rem',
               borderRadius: '9999px',

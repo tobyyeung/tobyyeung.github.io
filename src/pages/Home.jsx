@@ -233,12 +233,19 @@ const Home = () => {
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat'
         }}>
-        <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap-reverse', gap: '4rem' }}>
+          <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap-reverse', gap: '4rem', position: 'relative', zIndex: 11 }}>
           {/* Text Content */}
           <div style={{ flex: '1 1 500px' }}>
             <h1 style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem', marginBottom: '1.5rem', lineHeight: '1.1' }}>
               <span style={{ fontSize: '2.5rem', color: 'var(--text-primary)', fontWeight: '500' }}>Hi, I'm</span>
-              <span className="gradient-text" style={{ fontSize: '5.5rem', display: 'block', filter: 'drop-shadow(1px 1px 0px #ffffff) drop-shadow(-1px -1px 0px #ffffff) drop-shadow(1px -1px 0px #ffffff) drop-shadow(-1px 1px 0px #ffffff)' }}>Toby Yeung</span>
+              <span className="cyber-text glitch-hover" style={{ 
+                fontSize: '5.5rem', 
+                display: 'inline-block', 
+                width: 'fit-content',
+                paddingBottom: '0.2em',
+                marginBottom: '-0.2em',
+                filter: 'drop-shadow(1px 1px 0px #ffffff) drop-shadow(-1px -1px 0px #ffffff) drop-shadow(1px -1px 0px #ffffff) drop-shadow(-1px 1px 0px #ffffff)' 
+              }}>Toby Yeung</span>
             </h1>
             <p style={{ fontSize: '1.25rem', color: 'var(--text-primary)', maxWidth: '800px', marginBottom: '2.5rem', lineHeight: '1.6', minHeight: windowWidth < 600 ? '90px' : '60px' }}>
               {typedText}
@@ -518,7 +525,7 @@ const Home = () => {
               <div key={skill} className="glass-panel" style={{
                 width: '100%',
                 aspectRatio: '1/1',
-                background: 'var(--bg-secondary)',
+                background: 'var(--bg-tertiary)',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
